@@ -29,6 +29,6 @@ APageSwitch::APageSwitch(const AString& text, unsigned pageNumber, const _<APage
     });
 }
 
-int APageSwitch::getContentMinimumWidth() {
-    return ALabel::getContentMinimumWidth();
+glm::ivec2 APageSwitch::getContentMinimumSize() {
+    return ALabel::getContentMinimumSize();
 }

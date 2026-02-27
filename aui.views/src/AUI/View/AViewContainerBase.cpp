@@ -342,18 +342,14 @@ void AViewContainerBase::onMouseLeave() {
     }
 }
 
-int AViewContainerBase::getContentMinimumWidth() {
+glm::ivec2 AViewContainerBase::getContentMinimumSize() {
+    glm::ivec2 minSize = AView::getContentMinimumSize();
     if (mLayout) {
-        return (glm::max)(mLayout->getMinimumWidth(), AView::getContentMinimumWidth());
+        // Use measured size if available, otherwise fall back to getMinimumSize()
+        // This avoids redundant calculations during layout passes
+        minSize = glm::max(mLayout->getMinimumSize(), minSize);
     }
-    return AView::getContentMinimumWidth();
-}
-
-int AViewContainerBase::getContentMinimumHeight() {
-    if (mLayout) {
-        return (glm::max)(mLayout->getMinimumHeight(), AView::getContentMinimumHeight());
-    }
-    return AView::getContentMinimumHeight();
+    return minSize;
 }
 
 void AViewContainerBase::onPointerPressed(const APointerPressedEvent& event) {
@@ -524,6 +520,20 @@ void AViewContainerBase::setSize(glm::ivec2 size) {
     applyGeometryToChildrenIfNecessary();
 }
 
+void AViewContainerBase::onMeasure(glm::ivec2 availableSize) {
+    if (mLayout) {
+        // Measure children first with available space minus padding
+        mLayout->measure({
+            availableSize.x > 0 ? availableSize.x - getPadding().horizontal() : 0,
+            availableSize.y > 0 ? availableSize.y - getPadding().vertical() : 0
+        });
+        // Use measured size of children to determine our measured size
+        setMeasuredDimension(mLayout->getMinimumSize() + getPadding().occupiedSize());
+    } else {
+        setMeasuredDimension(getMinimumSize());
+    }
+}
+
 void AViewContainerBase::invalidateAllStyles() {
     AView::invalidateAllStyles();
     if (mSizeSet)
@@ -540,7 +550,8 @@ void AViewContainerBase::applyGeometryToChildren() {
     if (!lock) {
         throw AException("applyGeometryToChildren: can't ensure safe iteration");
     }
-    mLayout->onResize(mPadding.left, mPadding.top,
+    mLayout->measure(getSize());
+    mLayout->performLayout(mPadding.left, mPadding.top,
                       getSize().x - mPadding.horizontal(), getSize().y - mPadding.vertical());
 }
 

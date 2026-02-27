@@ -17,7 +17,7 @@
 #include "AUI/Platform/AMessageBox.h"
 #include "AUI/Util/ARandom.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 MinesweeperWindow::MinesweeperWindow() : AWindow("Minesweeper", 100_dp, 100_dp) {
     setContents(Vertical {

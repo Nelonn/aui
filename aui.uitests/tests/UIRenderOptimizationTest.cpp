@@ -23,7 +23,7 @@
 #include <AUI/View/AScrollArea.h>
 #include <gtest/gtest.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 /**
  * This test suite checks that views that 100% should not be rendered (i.e. outside of scroll area bounding box) are

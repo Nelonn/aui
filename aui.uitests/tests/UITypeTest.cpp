@@ -14,7 +14,7 @@
 #include <AUI/View/AButton.h>
 #include <AUI/View/ATextField.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 /**
  * There's a text field and a button:

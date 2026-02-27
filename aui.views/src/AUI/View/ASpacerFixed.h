@@ -40,14 +40,13 @@ class API_AUI_VIEWS ASpacerFixed : public AView {
 public:
     explicit ASpacerFixed(AMetric space) : mSpace(space) {}
     bool consumesClick(const glm::ivec2& pos) override;
-    int getContentMinimumWidth() override;
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
 
 private:
     AMetric mSpace;
 };
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * @declarativeformof{ASpacerFixed}

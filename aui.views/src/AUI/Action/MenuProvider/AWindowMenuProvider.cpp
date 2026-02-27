@@ -22,7 +22,7 @@
 #include <AUI/Util/UIBuildingHelpers.h>
 #include <AUI/View/ALabel.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace std::chrono_literals;
 
 class AMenuContainer : public AViewContainerBase {

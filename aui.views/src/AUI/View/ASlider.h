@@ -14,7 +14,7 @@
 #include "AViewContainer.h"
 #include "AProgressBar.h"
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * @brief Slider control.

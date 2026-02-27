@@ -17,7 +17,7 @@
 #include <AUI/View/ACheckBox.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 struct State {
     AProperty<bool> showSpoiler = false;

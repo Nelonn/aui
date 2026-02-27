@@ -113,7 +113,7 @@ public:
 };
 
 DevtoolsLayoutTab::DevtoolsLayoutTab(AWindowBase* targetWindow) : mTargetWindow(targetWindow) {
-    using namespace declarative;
+    using namespace aui::declarative;
 
     setContents(Vertical {
       Horizontal {

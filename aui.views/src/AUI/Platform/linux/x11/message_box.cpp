@@ -21,7 +21,7 @@ public:
         AWindow* parent, const AString& title, const AString& message, AMessageBox::Icon icon, AMessageBox::Button b)
       : AWindow(title, 300_dp, 200_dp, parent,
                 WindowStyle::MODAL | WindowStyle::NO_MINIMIZE_MAXIMIZE | WindowStyle::NO_RESIZE) {
-        using namespace declarative;
+        using namespace aui::declarative;
         setContents(Vertical {
           AText::fromString(message),
           Centered {

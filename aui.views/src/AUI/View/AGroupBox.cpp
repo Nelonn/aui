@@ -17,7 +17,7 @@
 #include "AUI/Util/UIBuildingHelpers.h"
 #include "ACheckBox.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
     class Inner: public AViewContainerBase {
@@ -51,7 +51,7 @@ AGroupBox::AGroupBox(_<AView> titleView, _<AView> contentView):
 
     setLayout(std::make_unique<AVerticalLayout>());
 
-    using namespace declarative;
+    using namespace aui::declarative;
     setContents(Vertical {
         Horizontal { mTitle } << ".agroupbox-title",
         mFrame = _new<Inner>(mTitle,

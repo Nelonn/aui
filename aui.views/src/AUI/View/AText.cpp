@@ -180,7 +180,7 @@ void AText::fillStringCanvas(const _<IRenderer::IMultiStringCanvas>& canvas) {
                                  getFontStyle().getAscenderHeight() + getFontStyle().getDescenderHeight()
     };
     if (mVerticalAlign == VerticalAlign::MIDDLE) {
-        ascender += (getContentHeight() - ATextBase<>::getContentMinimumHeight()) / 2;
+        ascender += (getContentHeight() - ATextBase<>::getContentMinimumSize().y) / 2;
     }
     for (auto& wordEntry: mWordEntries) {
         canvas->addString(wordEntry.getPosition() + ascender, wordEntry.getWord());
@@ -198,7 +198,7 @@ void AText::applyGeometryToChildren() {
 
     int y = 0;
     if (mVerticalAlign == VerticalAlign::MIDDLE) {
-        y += (getContentHeight() - ATextBase<>::getContentMinimumHeight()) / 2;
+        y += (getContentHeight() - ATextBase<>::getContentMinimumSize().y) / 2;
     }
     mViewsContainer->setGeometry(0, y, getWidth(), getHeight());
 }

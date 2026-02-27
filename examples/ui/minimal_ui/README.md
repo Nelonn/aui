@@ -69,7 +69,7 @@ public:
 #include <AUI/View/AButton.h>
 #include <AUI/Platform/APlatform.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 MainWindow::MainWindow(): AWindow("Project template app", 300_dp, 200_dp) {
     setContents(

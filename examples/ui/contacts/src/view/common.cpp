@@ -13,7 +13,7 @@
 #include <AUI/Util/UIBuildingHelpers.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 _<AView> common_views::divider() {
     return _new<AView>() AUI_OVERRIDE_STYLE { FixedSize { {}, 1_px }, BackgroundSolid { AColor::GRAY } };

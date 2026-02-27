@@ -10,13 +10,14 @@
  */
 
 #include "ACheckBox.h"
-#include "AUI/Util/Declarative/Containers.h"
+#include "AUI/Layout/AHorizontalLayout.h"
+#include "AUI/Layout/AStackedLayout.h"
 
 ACheckBox::ACheckBox(_<AView> content)
 {
     mBox = _new<ACheckBox::Box>();
-    setContents(declarative::Horizontal {
-      declarative::Centered { mBox },
+    setContents(aui::declarative::Horizontal {
+      aui::declarative::Centered { mBox },
       std::move(content),
     });
 
@@ -30,7 +31,7 @@ ACheckBox::Box::Box() {
     connect(checked.changed, [this] { emit customCssPropertyChanged; });
 }
 
-_<AView> declarative::CheckBox::operator()() {
+_<AView> aui::declarative::CheckBox::operator()() {
     auto checkbox = _new<ACheckBox>(std::move(content));
     checkbox->clicked.clearAllOutgoingConnectionsWith(checkbox); // removes default legacy behavior
     AObject::connect(checkbox->clicked, checkbox, [&checkbox = *checkbox]() {

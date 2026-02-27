@@ -16,7 +16,7 @@
 #include "AUI/View/AProgressBar.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 struct State {
     AProperty<aui::float_within_0_1> progress = 0.42f;

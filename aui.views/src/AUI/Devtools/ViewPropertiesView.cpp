@@ -38,7 +38,7 @@
 #include "AUI/View/AForEachUI.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 ViewPropertiesView::ViewPropertiesView(const _<AView>& targetView) {
     setCustomStyle({

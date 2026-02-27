@@ -12,7 +12,7 @@
 #include "AUI/View/AProgressBar.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 using namespace std::chrono_literals;
 
 class UpdaterStatusTest : public testing::UITest {

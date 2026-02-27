@@ -36,7 +36,7 @@ public:
     }
 
     void applyGeometryToChildren() override {
-        getLayout()->onResize(mPadding.left, mPadding.top - mScrollY,
+        getLayout()->performLayout(mPadding.left, mPadding.top - mScrollY,
                               getSize().x - mPadding.horizontal(), getSize().y - mPadding.vertical());
     }
 
@@ -44,12 +44,8 @@ public:
         return mIndex;
     }
 
-    int getContentMinimumWidth() override {
-        return 40;
-    }
-
-    int getContentMinimumHeight() override {
-        return 40;
+    glm::ivec2 getContentMinimumSize() override {
+        return { 40, 40 };
     }
 };
 
@@ -287,7 +283,7 @@ void ATreeView::setModel(const _<ITreeModel<AString>>& model) {
 
 void ATreeView::makeElement(const _<AViewContainer>& container, const ATreeModelIndex& childIndex, bool isGroup, const _<ATreeView::ItemView>& itemView) {
     // always add wrapper (even if isGroup = false) to simplify view walkthrough
-    _<AViewContainer> wrapper = declarative::Vertical{};
+    _<AViewContainer> wrapper = aui::declarative::Vertical{};
     wrapper->setVisibility(Visibility::GONE);
     wrapper << ".list-item-group";
     container->addView(childIndex.row() * 2, wrapper);
@@ -321,7 +317,7 @@ void ATreeView::setSize(glm::ivec2 size) {
 
 void ATreeView::updateScrollbarDimensions() {
     if (mContent) {
-        mScrollbar->setScrollDimensions(getHeight(), mContent->AViewContainer::getContentMinimumHeight());
+        mScrollbar->setScrollDimensions(getHeight(), mContent->AViewContainer::getContentMinimumSize().y);
     }
 }
 
@@ -354,8 +350,8 @@ void ATreeView::fillViewsRecursively(const _<AViewContainer>& content, const ATr
 
 }
 
-int ATreeView::getContentMinimumHeight() {
-    return 40;
+glm::ivec2 ATreeView::getContentMinimumSize() {
+    return { 0, 40 };
 }
 
 void ATreeView::handleMouseMove(ATreeView::ItemView* pView) {

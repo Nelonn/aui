@@ -15,7 +15,7 @@
 #include <AUI/View/AScrollArea.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 using std::operator""sv;
 
 namespace {

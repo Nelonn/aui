@@ -23,7 +23,7 @@
 #include <AUI/ASS/ASS.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 FractalWindow::FractalWindow() : AWindow("Mandelbrot set") {
     setLayout(std::make_unique<AHorizontalLayout>());

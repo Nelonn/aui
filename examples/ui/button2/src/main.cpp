@@ -15,7 +15,7 @@
 #include <AUI/View/AButton.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 class MainWindow: public AWindow {
 public:

@@ -17,7 +17,7 @@
 #include "AUI/View/ARadioButton.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 struct State {
     AProperty<int> selection = 0;

@@ -1089,6 +1089,8 @@ function(aui_module AUI_MODULE_NAME)
     file(GLOB_RECURSE SRCS
             ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
             ${CMAKE_CURRENT_SOURCE_DIR}/src/*.manifest
             ${CMAKE_CURRENT_SOURCE_DIR}/src/*.mm
             ${CMAKE_CURRENT_SOURCE_DIR}/src/*.m)

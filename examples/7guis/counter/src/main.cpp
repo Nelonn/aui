@@ -15,7 +15,7 @@
 #include <AUI/View/AButton.h>
 #include "AUI/View/ATextField.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 /// [counter]
 class CounterWindow : public AWindow {

@@ -20,7 +20,7 @@
 #include <AUI/Platform/ADesktop.h>
 #include <AUI/Util/UIBuildingHelpers.h>
 #include "AEmbedMenuProvider.h"
-using namespace declarative;
+using namespace aui::declarative;
 
 class AEmbedMenuProvider::MenuContainer: public AViewContainerBase {
 private:
@@ -79,7 +79,7 @@ public:
 
                             mSubWindow = _new<MenuContainer>(mWindow, items);
                             auto pos = (view->getPositionInWindow() + glm::ivec2{view->getWidth(), 0});
-                            mSubWindow->setGeometry(pos.x, pos.y, mSubWindow->getMinimumWidth(), mSubWindow->getMinimumHeight());
+                            mSubWindow->setGeometry(pos, mSubWindow->getMinimumSize());
                             mWindow->addViewCustomLayout(mSubWindow);
                         });
                     } else {
@@ -110,7 +110,7 @@ void AEmbedMenuProvider::createMenu(const AVector<AMenuItem>& vector) {
     closeMenu();
     mWindow = _new<MenuContainer>(AWindow::current(), vector);
     auto mousePos = AWindow::current()->getMousePos();
-    mWindow->setGeometry(mousePos.x, mousePos.y, mWindow->getMinimumWidth(), mWindow->getMinimumHeight());
+    mWindow->setGeometry(mousePos, mWindow->getMinimumSize());
 }
 
 void AEmbedMenuProvider::closeMenu() {

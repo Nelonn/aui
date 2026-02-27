@@ -16,7 +16,7 @@
 #include <AUI/View/ATextField.h>
 
 
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
     class InnerDialogBox : public AViewContainerBase {

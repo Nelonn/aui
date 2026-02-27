@@ -44,7 +44,7 @@ protected:
         UITest::SetUp();
 
         mWindow = _new<AWindow>();
-        using namespace declarative;
+        using namespace aui::declarative;
         ALayoutInflater::inflate(mWindow,
                                  Vertical {
                                    Centered {

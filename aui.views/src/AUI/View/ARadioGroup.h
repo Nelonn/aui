@@ -25,7 +25,7 @@
 /**
  * <!-- aui:no_dedicated_page -->
  */
-class API_AUI_VIEWS [[deprecated("use declarative::RadioButton instead")]] ARadioGroup : public AViewContainer {
+class API_AUI_VIEWS [[deprecated("use aui::declarative::RadioButton instead")]] ARadioGroup : public AViewContainer {
 private:
     _<IListModel<AString>> mModel;
     _<ARadioButton::Group> mGroup;
@@ -70,12 +70,12 @@ signals:
     emits<int> selectionChanged;
 };
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * <!-- aui:no_dedicated_page -->
  */
-struct [[deprecated("use declarative::RadioButton instead")]] RadioGroup : aui::ui_building::view_container_layout<AVerticalLayout, ARadioGroup> {
+struct [[deprecated("use aui::declarative::RadioButton instead")]] RadioGroup : aui::ui_building::view_container_layout<AVerticalLayout, ARadioGroup> {
     using aui::ui_building::view_container_layout<AVerticalLayout, ARadioGroup>::layouted_container_factory;
     struct Horizontal : aui::ui_building::view_container_layout<AHorizontalLayout, ARadioGroup> {
         using aui::ui_building::view_container_layout<AHorizontalLayout, ARadioGroup>::layouted_container_factory;

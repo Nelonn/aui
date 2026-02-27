@@ -21,7 +21,7 @@
 #include <AUI/View/AButton.h>
 #include <AUI/Platform/AMessageBox.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 JumpToCoordsWindow::JumpToCoordsWindow(_<FractalView> fractalView, AWindow* parent)
   : AWindow("Jump to coords", 854_dp, 500_dp, parent, WindowStyle::NO_RESIZE) {

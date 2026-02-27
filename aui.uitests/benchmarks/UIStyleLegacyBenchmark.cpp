@@ -103,8 +103,8 @@ static void UIStyleLegacy(benchmark::State& state) {
     });
 
     auto window = _new<AWindow>();
-    _<AView> button = declarative::Button {};
-    window->setContents(declarative::Centered { button });
+    _<AView> button = aui::declarative::Button {};
+    window->setContents(aui::declarative::Centered { button });
     window->pack();
     window->show();
 

@@ -105,7 +105,7 @@ private:
     _<Inner> mInner;
 };
 
-namespace declarative {
+namespace aui::declarative {
 /**
  * <!-- aui:no_dedicated_page -->
  */

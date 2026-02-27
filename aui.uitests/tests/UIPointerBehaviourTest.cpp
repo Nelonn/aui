@@ -15,7 +15,7 @@
 #include <AUI/View/AButton.h>
 #include "AUI/Util/ALayoutInflater.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
 class ViewMock: public AView {
@@ -65,7 +65,7 @@ protected:
         UITest::SetUp();
 
         mWindow = _new<AWindow>();
-        using namespace declarative;
+        using namespace aui::declarative;
         ALayoutInflater::inflate(mWindow,
             Vertical {
               Centered {

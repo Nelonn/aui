@@ -50,7 +50,7 @@ private:
 
 
 
-namespace declarative {
+namespace aui::declarative {
     /**
      * @declarativeformof{AGroupBox}
      */

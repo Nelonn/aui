@@ -13,6 +13,7 @@
 
 #include "ALinearLayout.h"
 #include <AUI/Util/ALayoutDirection.h>
+#include <AUI/Util/Declarative/Containers.h>
 
 /**
  * @brief Places views in a column.
@@ -52,11 +53,9 @@ public:
     AVerticalLayout(int spacing) : mSpacing(spacing) {
     }
 
-    void onResize(int x, int y, int width, int height) override;
-
-    int getMinimumWidth() override;
-
-    int getMinimumHeight() override;
+    void performLayout(int x, int y, int width, int height) override;
+    void measure(glm::ivec2 availableSize) override;
+    glm::ivec2 getMinimumSize() override;
 
     /**
      * @see [LayoutSpacing](ass::LayoutSpacing)
@@ -68,3 +67,18 @@ public:
 
     ALayoutDirection getLayoutDirection() override;
 };
+
+namespace aui::declarative {
+/**
+ * @brief Places views in a column.
+ * <p>
+ *  <img width="960" src="https://github.com/aui-framework/aui/raw/master/docs/imgs/vertical.jpg">
+ *
+ *  <dl>
+ *    <dt><b>View:</b> AViewContainer</dt>
+ *    <dt><b>Layout manager:</b> AVerticalLayout</dt>
+ *  </dl>
+ * </p>
+ */
+using Vertical = aui::ui_building::view_container_layout<AVerticalLayout>;
+}

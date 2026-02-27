@@ -10,6 +10,7 @@
  */
 
 #pragma once
+
 #include "ALayout.h"
 
 /**
@@ -20,44 +21,43 @@
 class API_AUI_VIEWS AGridLayout: public ALayout
 {
 private:
-	int mCurrentIndex = 0;
-	int mCellsX, mCellsY;
+    int mCurrentIndex = 0;
+    int mCellsX, mCellsY;
 
-	struct GridCell
-	{
-		_<AView> view;
-		int x, y;
+    struct GridCell {
+    	_<AView> view;
+    	int x, y;
 
         operator _<AView>() const {
             return view;
         }
-	};
-	AVector<GridCell> mCells;
-	AVector<int> mIndices;
+    };
 
+    AVector<GridCell> mCells;
+    AVector<int> mIndices;
 
     int& indexAt(int x, int y);
 
-	AVector<_<AView>> getRow(int row);
-	AVector<_<AView>> getColumn(int column);
+    AVector<_<AView>> getRow(int row);
+    AVector<_<AView>> getColumn(int column);
 public:
-	AGridLayout(int cellsX, int cellsY);
-	virtual ~AGridLayout() = default;
+    AGridLayout(int cellsX, int cellsY);
+    virtual ~AGridLayout() = default;
 
-	_<AView> getViewAt(size_t index) {
-	    return mCells.at(index).view;
-	}
+    _<AView> getViewAt(size_t index) {
+        return mCells.at(index).view;
+    }
 
-	void setViewAt(size_t index, _<AView> view) {
-	    mCells.at(index).view = view;
-	}
+    void setViewAt(size_t index, _<AView> view) {
+        mCells.at(index).view = view;
+    }
 
-	void onResize(int x, int y, int width, int height) override;
-	void addView(const _<AView>& view, int x, int y);
+    void performLayout(int x, int y, int width, int height) override;
+    void measure(glm::ivec2 availableSize) override;
+    void addView(const _<AView>& view, int x, int y);
     void addView(const _<AView>& view, AOptional<size_t> index) override;
     void removeView(aui::no_escape<AView> view, size_t index) override;
-    int getMinimumWidth() override;
-	int getMinimumHeight() override;
+    glm::ivec2 getMinimumSize() override;
     AVector<_<AView>> getAllViews() override;
 
     int indexOf(_<AView> view);

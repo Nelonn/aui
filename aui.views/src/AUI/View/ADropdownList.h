@@ -69,7 +69,7 @@ public:
         return mSelectionId;
     }
     void setSelectionId(int id);
-    int getContentMinimumWidth() override;
+    glm::ivec2 getContentMinimumSize() override;
 
     void onPointerReleased(const APointerReleasedEvent& event) override;
 

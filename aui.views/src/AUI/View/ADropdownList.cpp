@@ -78,8 +78,8 @@ void ADropdownList::render(ARenderContext context) {
     }
 }
 
-int ADropdownList::getContentMinimumWidth() {
-    return AButton::getContentMinimumWidth() + 20;
+glm::ivec2 ADropdownList::getContentMinimumSize() {
+    return AButton::getContentMinimumSize() + glm::ivec2{ 20, 0 };
 }
 
 void ADropdownList::onPointerReleased(const APointerReleasedEvent& event) {
@@ -92,7 +92,7 @@ void ADropdownList::onPointerReleased(const APointerReleasedEvent& event) {
 
         auto list = _new<AListView>(mModel) AUI_OVERRIDE_STYLE { ass::Margin { 0 }, ass::Expanding{}, ass::MinSize {  AMetric(getWidth(), AMetric::T_PX), 0, } };
         list << ".combobox_list";
-        int listHeight = list->getContentFullHeight() + list->getMinimumHeight() + 2; // bias
+        int listHeight = list->getContentFullHeight() + list->getMinimumSize().y + 2; // bias
         auto comboBoxPos = getPositionInWindow();
         unsigned usedPositionIndex;
         auto comboWindow = parentWindow->createOverlappingSurface(
@@ -104,7 +104,7 @@ void ADropdownList::onPointerReleased(const APointerReleasedEvent& event) {
                         default: return std::nullopt;
                     }
                 },{
-                        (glm::max)(getWidth(), list->getMinimumWidth()),
+                        (glm::max)(getWidth(), list->getMinimumSize().x),
                         listHeight
                 });
         comboWindow->setLayout(std::make_unique<AVerticalLayout>());

@@ -14,7 +14,7 @@
 #include <AUI/Util/UIBuildingHelpers.h>
 #include <AUI/View/AButton.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 /**
  * This test suite checks a simple program.

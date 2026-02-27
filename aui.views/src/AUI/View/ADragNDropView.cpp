@@ -17,7 +17,7 @@
 #include "AUI/Util/UIBuildingHelpers.h"
 #include "AUI/Platform/ADragNDrop.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 ADragNDropView::ADragNDropView() {
     setContents(Centered {

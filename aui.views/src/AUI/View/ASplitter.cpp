@@ -70,25 +70,25 @@ public:
 
     using HVLayout = aui::HVLayout<BaseLayout::DIRECTION>;
 
-    void onResize(int x, int y, int width, int height) override {
+    void performLayout(int x, int y, int width, int height) override {
         glm::ivec2 paddedPos = { x, y };
         glm::ivec2 paddedSize = { width, height };
 
         // reclaim space if provided size is less than the current layout size.
         if constexpr (BaseLayout::DIRECTION == ALayoutDirection::HORIZONTAL) {
-            const auto splitterWidth = HVLayout::getMinimumWidth(viewsWithFixedSizeInjected(), BaseLayout::getSpacing());
+            const auto splitterWidth = HVLayout::getMinimumSize(viewsWithFixedSizeInjected(), BaseLayout::getSpacing()).x;
             if (width < splitterWidth) {
                 mSplitterHelper.reclaimSpace(width - splitterWidth);
             }
         }
         if constexpr (BaseLayout::DIRECTION == ALayoutDirection::VERTICAL) {
-            const auto splitterHeight = HVLayout::getMinimumHeight(viewsWithFixedSizeInjected(), BaseLayout::getSpacing());
+            const auto splitterHeight = HVLayout::getMinimumSize(viewsWithFixedSizeInjected(), BaseLayout::getSpacing()).y;
             if (height < splitterHeight) {
                 mSplitterHelper.reclaimSpace(height - splitterHeight);
             }
         }
 
-        HVLayout::onResize(paddedPos, paddedSize, viewsWithFixedSizeInjected(), BaseLayout::getSpacing());
+        HVLayout::performLayout(paddedPos, paddedSize, viewsWithFixedSizeInjected(), BaseLayout::getSpacing());
     }
 
     ~ASplitterLayout() override = default;

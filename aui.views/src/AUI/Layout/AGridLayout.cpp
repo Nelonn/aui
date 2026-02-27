@@ -77,7 +77,7 @@ AGridLayout::AGridLayout(int cellsX, int cellsY): mCellsX(cellsX), mCellsY(cells
 	mIndices.resize(cellsX * cellsY, -1);
 }
 
-void AGridLayout::onResize(int x, int y, int width, int height)
+void AGridLayout::performLayout(int x, int y, int width, int height)
 {
 	float cellWidth = static_cast<float>(width) / mCellsX;
 	float cellHeight = static_cast<float>(height) / mCellsY;
@@ -135,36 +135,43 @@ void AGridLayout::removeView(aui::no_escape<AView> view, size_t index) {
 	mCells.removeAt(index);
 }
 
-int AGridLayout::getMinimumWidth()
+glm::ivec2 AGridLayout::getMinimumSize()
 {
-	int min = 0;
+	int minW = 0;
 	for (int y = 0; y < mCellsY; ++y)
 	{
 		int minForRow = 0;
 		for (auto& view : getRow(y))
 		{
-			minForRow = glm::max(int(view->getMinimumWidth() + view->getMargin().horizontal()), minForRow);
+			// Use measured size for better performance
+			minForRow = glm::max(int(view->getMeasuredSize().x + view->getMargin().horizontal()), minForRow);
 		}
-		min = glm::max(minForRow * mCellsX, min);
+		minW = glm::max(minForRow * mCellsX, minW);
 	}
-	return min;
-}
-
-int AGridLayout::getMinimumHeight()
-{
-	int min = 0;
+	int minH = 0;
 	for (int x = 0; x < mCellsX; ++x)
 	{
 		int minForColumn = 0;
 		for (auto& view : getColumn(x))
 		{
-			minForColumn = glm::max(int(view->getMinimumHeight() + view->getMargin().vertical()), minForColumn);
+			// Use measured size for better performance
+			minForColumn = glm::max(int(view->getMeasuredSize().y + view->getMargin().vertical()), minForColumn);
 		}
-		min = glm::max(minForColumn * mCellsY, min);
+		minH = glm::max(minForColumn * mCellsY, minH);
 	}
-	return min;
+	return { minW, minH };
 }
 
 AVector<_<AView>> AGridLayout::getAllViews() {
     return { mCells.begin(), mCells.end() };
+}
+
+void AGridLayout::measure(glm::ivec2 availableSize) {
+    float cellWidth = static_cast<float>(availableSize.x) / mCellsX;
+    float cellHeight = static_cast<float>(availableSize.y) / mCellsY;
+
+    for (auto& v : mCells) {
+        v.view->measure({ glm::round(cellWidth) - v.view->getMargin().horizontal(),
+                          glm::round(cellHeight) - v.view->getMargin().vertical() });
+    }
 }

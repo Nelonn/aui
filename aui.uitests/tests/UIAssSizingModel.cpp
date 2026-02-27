@@ -36,7 +36,7 @@ TEST_F(UIAssSizingModel, AllBoxesAreIdential) {
     // `FixedSize` will always acquire the specified size, `MinSize` specifies the minimum size that can potentially
     // grow further, and `MaxSize` restricts [EXPANDING] by specified size.
     // AUI_DOCS_CODE_BEGIN
-    using namespace declarative;
+    using namespace aui::declarative;
     using namespace ass;
 
     static auto testView = [] {

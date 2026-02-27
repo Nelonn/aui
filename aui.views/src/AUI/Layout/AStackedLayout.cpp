@@ -12,20 +12,22 @@
 #include "AStackedLayout.h"
 
 
-void ::AStackedLayout::onResize(int x, int y, int width, int height) {
+void AStackedLayout::performLayout(int x, int y, int width, int height) {
     for (auto& v: mViews) {
         v->ensureAssUpdated();
         int finalX, finalY, finalWidth, finalHeight;
         auto margins = v->getMargin();
+        // Use measured size instead of getMinimumSize() for better performance
+        const auto& measuredSize = v->getMeasuredSize();
         if (v->getExpandingHorizontal() == 0) {
-            finalWidth = glm::min(v->getMinimumWidth() + margins.horizontal(), width);
+            finalWidth = glm::min(measuredSize.x + margins.horizontal(), width);
             finalX = (width - finalWidth) / 2;
         } else {
             finalX = 0;
             finalWidth = width;
         }
         if (v->getExpandingVertical() == 0) {
-            finalHeight = glm::min(v->getMinimumHeight() + margins.vertical(), height);
+            finalHeight = glm::min(measuredSize.y + margins.vertical(), height);
             finalY = (height - finalHeight) / 2;
         } else {
             finalY = 0;
@@ -44,19 +46,28 @@ void ::AStackedLayout::onResize(int x, int y, int width, int height) {
     }
 }
 
-int ::AStackedLayout::getMinimumWidth() {
-    int m = 0;
-    for (auto& v: mViews)
-        if (!!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
-            m = glm::max(int(v->getMinimumWidth() + v->getMargin().horizontal()), m);
-    return m;
+void AStackedLayout::measure(glm::ivec2 availableSize) {
+    // Measure all children with the same available size (minus margins)
+    for (auto& v : mViews) {
+        if (!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
+            continue;
+        v->measure({
+            availableSize.x > 0 ? availableSize.x - v->getMargin().horizontal() : 0,
+            availableSize.y > 0 ? availableSize.y - v->getMargin().vertical() : 0
+        });
+    }
 }
 
-int ::AStackedLayout::getMinimumHeight() {
-    int m = 0;
+glm::ivec2 AStackedLayout::getMinimumSize() {
+    int minW = 0;
+    int minH = 0;
     for (auto& v: mViews) {
-        if (!!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
-            m = glm::max(int(v->getMinimumHeight() + v->getMargin().vertical()), m);
+        if (!!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE)) {
+            // Use measured size if available for better performance
+            const auto s = v->getMeasuredSize();
+            minW = glm::max(s.x + v->getMargin().horizontal(), minW);
+            minH = glm::max(s.y + v->getMargin().vertical(), minH);
+        }
     }
-    return m;
+    return { minW, minH };
 }

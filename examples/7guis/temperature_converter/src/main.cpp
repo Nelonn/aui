@@ -16,7 +16,7 @@
 #include "AUI/View/ATextField.h"
 #include "AUI/View/ANumberPicker.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 auto myPicker() {
     return _new<ANumberPicker>() AUI_LET {

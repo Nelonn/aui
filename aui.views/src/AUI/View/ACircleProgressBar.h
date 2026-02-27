@@ -76,7 +76,7 @@ signals:
     emits<aui::float_within_0_1> valueChanged;
 };
 
-namespace declarative {
+namespace aui::declarative {
 /**
  * <!-- aui:no_dedicated_page -->
  */

@@ -16,7 +16,7 @@
 #include <AUI/View/AButton.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 AUI_ENTRY {
     auto window = _new<AWindow>("Button", 600_dp, 300_dp);

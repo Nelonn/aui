@@ -6,7 +6,7 @@
 #include <AUI/Util/UIBuildingHelpers.h>
 #include <AUI/View/AButton.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 class UIViewFocus: public testing::UITest {
 protected:

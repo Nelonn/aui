@@ -11,26 +11,18 @@
 
 #include "ASpacerFixed.h"
 
-int ASpacerFixed::getContentMinimumWidth() {
+glm::ivec2 ASpacerFixed::getContentMinimumSize() {
     if (auto parent = getParent()) {
         if (const auto& layout = parent->getLayout()) {
             if (layout->getLayoutDirection() == ALayoutDirection::HORIZONTAL) {
-                return int(mSpace.getValuePx());
+                return { int(mSpace.getValuePx()), 0 };
             }
-        }
-    }
-    return 0;
-}
-
-int ASpacerFixed::getContentMinimumHeight() {
-    if (auto parent = getParent()) {
-        if (const auto& layout = parent->getLayout()) {
             if (layout->getLayoutDirection() == ALayoutDirection::VERTICAL) {
-                return int(mSpace.getValuePx());
+                return { 0, int(mSpace.getValuePx()) };
             }
         }
     }
-    return 0;
+    return { 0, 0 };
 }
 
 bool ASpacerFixed::consumesClick(const glm::ivec2& pos) {

@@ -151,7 +151,7 @@ private:
     AFieldSignalEmitter<bool> mDefault = AFieldSignalEmitter<bool>(defaultState, becameDefault, noLongerDefault);
 };
 
-namespace declarative {
+namespace aui::declarative {
 
 /// [declarative_example]
 

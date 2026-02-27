@@ -16,7 +16,7 @@
 #include "AUI/View/ASlider.h"
 #include "AUI/View/AButton.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 struct Circle {
     glm::vec2 position;

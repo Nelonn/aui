@@ -16,7 +16,7 @@
 #include <gmock/gmock.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 
 class UIText: public testing::UITest {

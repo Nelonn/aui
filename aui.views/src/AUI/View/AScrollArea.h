@@ -46,8 +46,7 @@ public:
         mInner->setContents(std::move(content));
     }
 
-    int getContentMinimumWidth() override;
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
 
     void onPointerPressed(const APointerPressedEvent& event) override;
     void onPointerReleased(const APointerReleasedEvent& event) override;

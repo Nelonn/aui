@@ -11,13 +11,13 @@
 
 #include "ARadioButton.h"
 #include "AUI/Layout/AHorizontalLayout.h"
-#include "AUI/Util/Declarative/Containers.h"
+#include "AUI/Layout/AStackedLayout.h"
 
 ARadioButton::ARadioButton(_<AView> content)
 {
     mCircle = _new<ARadioButton::Circle>();
-    setContents(declarative::Horizontal {
-      declarative::Centered { mCircle },
+    setContents(aui::declarative::Horizontal {
+      aui::declarative::Centered { mCircle },
       std::move(content),
     });
 
@@ -35,7 +35,7 @@ ARadioButton::Circle::Circle() {
     connect(checked.changed, [this] { emit customCssPropertyChanged; });
 }
 
-_<AView> declarative::RadioButton::operator()() {
+_<AView> aui::declarative::RadioButton::operator()() {
     auto radiobutton = _new<ARadioButton>(std::move(content));
 //    radiobutton->clicked.clearAllOutgoingConnectionsWith(radiobutton); // removes default legacy behavior
     checked.bindTo(radiobutton->circle()->checked.assignment());

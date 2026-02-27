@@ -22,7 +22,7 @@
 #include <AUI/Util/Declarative/Containers.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 class WrapperContainer: public AViewContainerBase {
 private:
@@ -58,12 +58,12 @@ ARulerArea::ARulerArea(const _<AView>& wrappedView) : mWrappedView(wrappedView) 
     setExpanding({10, 10});
 
 
-    mWrappedView->setSize({ mWrappedView->getMinimumWidth(), mWrappedView->getMinimumHeight() });
+    mWrappedView->setSize(mWrappedView->getMinimumSize());
 }
 
 void ARulerArea::setSize(glm::ivec2 size) {
     AViewContainerBase::setSize(size);
-    mWrappedView->setSize({ mWrappedView->getMinimumWidth(), mWrappedView->getMinimumHeight() });
+    mWrappedView->setSize(mWrappedView->getMinimumSize());
     updatePosition();
 }
 

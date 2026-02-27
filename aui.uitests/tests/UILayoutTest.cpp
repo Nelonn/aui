@@ -21,7 +21,7 @@
 #include "AUI/View/AGroupBox.h"
 #include "AUI/View/ASpacerFixed.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
 
@@ -33,7 +33,7 @@ protected:
 
     void inflate(_<AView> view) {
         mWindow = _new<AWindow>();
-        using namespace declarative;
+        using namespace aui::declarative;
         ALayoutInflater::inflate(mWindow, std::move(view));
         mWindow->show();
     }

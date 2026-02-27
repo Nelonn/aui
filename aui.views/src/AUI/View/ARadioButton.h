@@ -37,7 +37,7 @@
  * group of radio buttons, only one radio button at a time can be checked thus checking another radio button in a group
  * causes to switch off the previous one.
  *
- * <!-- aui:steal_documentation declarative::RadioButton -->
+ * <!-- aui:steal_documentation aui::declarative::RadioButton -->
  *
  * ## Create a basic radio button
  *
@@ -94,7 +94,7 @@ public:
         return mCircle;
     }
 
-    class API_AUI_VIEWS [[deprecated("use declarative::RadioButton instead.")]] Group : public AObject {
+    class API_AUI_VIEWS [[deprecated("use aui::declarative::RadioButton instead.")]] Group : public AObject {
     private:
         AMap<int, _<ARadioButton>> mButtons;
         _weak<ARadioButton> mSelectedRadio;
@@ -144,7 +144,7 @@ private:
     _<Circle> mCircle;
 };
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * <!-- aui:no_dedicated_page -->

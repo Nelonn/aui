@@ -19,7 +19,7 @@
 #include "AUI/Test/UI/By.h"
 #include "AUI/Util/ALayoutInflater.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
     class UIRepaintTest : public testing::UITest {
@@ -31,7 +31,7 @@ namespace {
 
         void inflate(_<AView> view) {
             mWindow = _new<AWindow>();
-            using namespace declarative;
+            using namespace aui::declarative;
             ALayoutInflater::inflate(mWindow, std::move(view));
             mWindow->show();
         }

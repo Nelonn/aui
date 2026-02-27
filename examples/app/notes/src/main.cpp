@@ -32,7 +32,7 @@
 
 static constexpr auto LOG_TAG = "Notes";
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 
 struct Note {

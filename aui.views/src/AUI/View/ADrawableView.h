@@ -49,7 +49,7 @@
  *
  * ## API surface
  *
- * <!-- aui:steal_documentation declarative::Icon -->
+ * <!-- aui:steal_documentation aui::declarative::Icon -->
  */
 class API_AUI_VIEWS ADrawableView : public AView {
 public:
@@ -111,7 +111,7 @@ public:
     ~ADrawableIconView() override = default;
 };
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * <!-- aui:no_dedicated_page -->

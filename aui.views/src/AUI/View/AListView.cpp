@@ -29,7 +29,7 @@ class AListViewContainer : public AViewContainer {
    public:
     void applyGeometryToChildren() override {
         if (getLayout())
-            getLayout()->onResize(mPadding.left, mPadding.top - mScrollY, getSize().x - mPadding.horizontal(),
+            getLayout()->performLayout(mPadding.left, mPadding.top - mScrollY, getSize().x - mPadding.horizontal(),
                                   getSize().y - mPadding.vertical());
     }
 

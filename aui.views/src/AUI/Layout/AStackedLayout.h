@@ -12,6 +12,7 @@
 #pragma once
 
 #include "ALinearLayout.h"
+#include <AUI/Util/Declarative/Containers.h>
 
 
 /**
@@ -41,9 +42,32 @@ public:
 
     virtual ~AStackedLayout() = default;
 
-    void onResize(int x, int y, int width, int height) override;
+    void performLayout(int x, int y, int width, int height) override;
 
-    int getMinimumWidth() override;
+    void measure(glm::ivec2 availableSize) override;
 
-    int getMinimumHeight() override;
+    glm::ivec2 getMinimumSize() override;
 };
+
+namespace aui::declarative {
+/**
+ * @brief Places views in a stack, centering them.
+ * <p>
+ *  <img width="960" src="https://github.com/aui-framework/aui/raw/master/docs/imgs/stacked2.jpg">
+ *
+ *  <dl>
+ *    <dt><b>View:</b> AViewContainer</dt>
+ *    <dt><b>Layout manager:</b> AStackedLayout</dt>
+ *  </dl>
+ * </p>
+ */
+using Stacked = aui::ui_building::view_container_layout<AStackedLayout>;
+
+/**
+ * <p>
+ * <code>Center</code> is an alias to Stacked. When Stacked is used only for centering views, you can use
+ * this alias in order to improve understanding of your code.
+ * </p>
+ */
+using Centered = Stacked;
+}

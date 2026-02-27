@@ -19,7 +19,7 @@
 #include "AUI/View/ATextField.h"
 #include "AUI/View/AListView.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 struct User {
     AProperty<AString> name;

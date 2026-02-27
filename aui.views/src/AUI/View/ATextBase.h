@@ -232,45 +232,61 @@ public:
         }
     }
 
-    int getContentMinimumWidth() override {
-        if (expanding()->x != 0 || mFixedSize.x != 0) {
-            // there's no need to calculate min size because width is defined.
-            return 0;
+    void onMeasure(glm::ivec2 availableSize) override {
+        int w = availableSize.x;
+        if (w == 0) {
+            w = getMinimumSize().x;
         }
 
-        // if width is not defined, when we try to occupy as much space as possible, only restricted by max size.
-        // basically, it is drastically simplified version of perform layout.
-        int max = 0;
-        int accumulator = 0;
-        const auto paddedMaxSize = mMaxSize.x - mPadding.horizontal();
-        for (const auto& e : mEngine.entries()) {
-            if (e->forcesNextLine()) {
-                max = glm::max(max, accumulator);
-                accumulator = 0;
-                continue;
-            }
-            if (accumulator + e->getSize().x > paddedMaxSize) {
-                if (accumulator == 0) {
-                    return mMaxSize.x;
-                }
-                // there's no need to calculate min size further.
-                goto ret;
-            }
-            accumulator += e->getSize().x;
+        mEngine.setTextAlign(getFontStyle().align);
+        mEngine.setLineHeight(getFontStyle().lineSpacing);
+        mEngine.performLayout({mPadding.left, mPadding.top }, {w - mPadding.horizontal(), 0});
+
+        int h = 0;
+        if (auto engineHeight = mEngine.height()) {
+            h = *engineHeight + getFontStyle().getDescenderHeight() + mPadding.vertical();
         }
-        ret:
-        return glm::max(max, accumulator);
+        setMeasuredDimension({ w, h });
     }
-    int getContentMinimumHeight() override {
+
+    glm::ivec2 getContentMinimumSize() override {
+        int w = 0;
+        if (expanding()->x == 0 && mFixedSize.x == 0) {
+            // if width is not defined, when we try to occupy as much space as possible, only restricted by max size.
+            // basically, it is drastically simplified version of perform layout.
+            int max = 0;
+            int accumulator = 0;
+            const auto paddedMaxSize = mMaxSize.x - mPadding.horizontal();
+            for (const auto& e : mEngine.entries()) {
+                if (e->forcesNextLine()) {
+                    max = glm::max(max, accumulator);
+                    accumulator = 0;
+                    continue;
+                }
+                if (accumulator + e->getSize().x > paddedMaxSize) {
+                    if (accumulator == 0) {
+                        w = mMaxSize.x;
+                        goto height;
+                    }
+                    // there's no need to calculate min size further.
+                    break;
+                }
+                accumulator += e->getSize().x;
+            }
+            w = glm::max(max, accumulator);
+        }
+
+        height:
         if (!mPrerenderedString) {
             performLayout();
         }
 
+        int h = 0;
         if (auto engineHeight = mEngine.height()) {
-            return *engineHeight + getFontStyle().getDescenderHeight();
+            h = *engineHeight + getFontStyle().getDescenderHeight();
         }
 
-        return 0;
+        return { w, h };
     }
 
     void invalidateFont() override {

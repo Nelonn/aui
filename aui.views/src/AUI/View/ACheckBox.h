@@ -156,7 +156,7 @@ private:
     _<Box> mBox;
 };
 
-namespace declarative {
+namespace aui::declarative {
 /**
  * <!-- aui:no_dedicated_page -->
  */

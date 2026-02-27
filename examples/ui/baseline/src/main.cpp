@@ -20,7 +20,7 @@
 #include "AUI/View/ASpacerFixed.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 class MainWindow : public AWindow {
 public:

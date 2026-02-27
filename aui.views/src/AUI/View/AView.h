@@ -37,6 +37,8 @@
 #include <AUI/Enum/MouseCollisionPolicy.h>
 #include <AUI/Util/ALayoutDirection.h>
 #include <AUI/Action/AMenu.h>
+#include <AUI/Util/AFlex.h>
+#include <AUI/Util/AMetric.h>
 
 #include <AUI/Event/AScrollEvent.h>
 #include <AUI/Event/AGestureEvent.h>
@@ -55,6 +57,13 @@ class AViewContainerBase;
 class AAnimator;
 class AAssHelper;
 class AStylesheet;
+
+namespace ass {
+    namespace prop {
+        template<typename T>
+        struct Property;
+    }
+}
 
 /**
  * @brief Base class of all UI objects.
@@ -92,6 +101,9 @@ class API_AUI_VIEWS AView: public AObject
     friend class AViewContainerBase;
     friend class AViewContainer;
     friend class IRenderViewToTexture;
+    
+    template<typename T>
+    friend class ass::prop::Property;
 public:
     AView();
     ~AView() override;
@@ -442,29 +454,10 @@ public:
     void setCursor(AOptional<ACursor> cursor);
 
     /**
-     * @return minimal content-area width.
-     */
-    [[nodiscard]]
-    virtual int getContentMinimumWidth();
-
-    /**
-     * @return minimal content-area height.
-     */
-    [[nodiscard]]
-    virtual int getContentMinimumHeight();
-
-    /**
      * @return minimal content-area size.
      */
     [[nodiscard]]
-    glm::ivec2 getContentMinimumSize() noexcept {
-        if (!mCachedMinContentSize) {
-            glm::ivec2 minContentSize = glm::ivec2(getContentMinimumWidth(), getContentMinimumHeight());
-            mCachedMinContentSize = minContentSize;
-            return minContentSize;
-        }
-        return *mCachedMinContentSize;
-    }
+    virtual glm::ivec2 getContentMinimumSize();
 
     [[nodiscard]]
     bool isContentMinimumSizeInvalidated() noexcept {
@@ -473,22 +466,40 @@ public:
 
     bool hasFocus() const;
 
-    virtual int getMinimumWidth();
-    virtual int getMinimumHeight();
+    virtual glm::ivec2 getMinimumSize();
 
     /**
-     * @brief Returns the minimum size required for this view.
-     * @return Minimum size (width, height) this view requires in pixels, excluding margins.
+     * @brief Measures the view.
+     * @param availableSize available size for the view.
      * @details
-     * The minimum size includes:
-     * - Minimum content size
-     * - Padding
-     *
-     * This value represents the absolute minimum dimensions the view needs to properly display its content. It's used
-     * by layout managers to ensure views aren't sized smaller than what they require to be functional.
+     * Uses cached measured size if available and valid. Call this method instead of getMinimumSize() during layout
+     * passes to avoid redundant calculations.
+     * 
+     * The availableSize parameter uses 0 to indicate unconstrained dimension:
+     * - {0, 0}: fully unconstrained, returns natural minimum size
+     * - {width, 0}: constrained width, measures height for given width
+     * - {0, height}: constrained height, measures width for given height
+     * - {width, height}: fully constrained, returns size fitting within constraints
      */
-    glm::ivec2 getMinimumSize() {
-        return { getMinimumWidth(), getMinimumHeight() };
+    void measure(glm::ivec2 availableSize);
+
+    /**
+     * @return measured size of the view.
+     */
+    const glm::ivec2& getMeasuredSize() const noexcept {
+        return mMeasuredSize;
+    }
+
+    /**
+     * @brief Returns measured size, measuring if necessary.
+     * @param availableSize available size constraints. Use {0, 0} for unconstrained.
+     * @details
+     * Convenience method that calls measure() if needed and returns the measured size.
+     */
+    [[nodiscard]]
+    glm::ivec2 getMeasuredSize(glm::ivec2 availableSize) {
+        measure(availableSize);
+        return mMeasuredSize;
     }
 
     void setMaxSize(const glm::ivec2& maxSize) {
@@ -627,29 +638,44 @@ public:
         markMinContentSizeInvalid();
     }
 
-    [[nodiscard]]
-    bool isMouseHover() const noexcept
-    {
-        return mHovered;
+    [[nodiscard]] float getFlexGrow() const {
+        return mFlexGrow;
+    }
+    void setFlexGrow(float flexGrow) {
+        mFlexGrow = flexGrow;
+        markMinContentSizeInvalid();
     }
 
-    [[nodiscard]]
-    bool isPressed() const noexcept
-    {
-        return !mPressed.empty();
+    [[nodiscard]] float getFlexShrink() const {
+        return mFlexShrink;
+    }
+    void setFlexShrink(float flexShrink) {
+        mFlexShrink = flexShrink;
+        markMinContentSizeInvalid();
     }
 
-    [[nodiscard]]
-    bool isPressed(APointerIndex index) const noexcept
-    {
-        return mPressed.contains(index);
+    [[nodiscard]] const AOptional<AMetric>& getFlexBasis() const {
+        return mFlexBasis;
+    }
+    void setFlexBasis(AOptional<AMetric> flexBasis) {
+        mFlexBasis = std::move(flexBasis);
+        markMinContentSizeInvalid();
     }
 
-    bool isFocused() const {
-        return mHasFocus;
+    [[nodiscard]] AFlexAlignItems getAlignSelf() const {
+        return mAlignSelf;
     }
-    bool isMouseEntered() const {
-        return mMouseEntered;
+    void setAlignSelf(AFlexAlignItems alignSelf) {
+        mAlignSelf = alignSelf;
+        markMinContentSizeInvalid();
+    }
+
+    [[nodiscard]] int getOrder() const {
+        return mOrder;
+    }
+    void setOrder(int order) {
+        mOrder = order;
+        markMinContentSizeInvalid();
     }
 
     Visibility getVisibility() const
@@ -665,7 +691,6 @@ public:
     {
         setVisibility(visible ? Visibility::VISIBLE : Visibility::INVISIBLE);
     }
-
 
     [[nodiscard]]
     const AColor& textColor() const {
@@ -691,6 +716,31 @@ public:
     void click() {
         emit clickedButton(APointerIndex::button(AInput::LBUTTON));
         emit clicked();
+    }
+
+    [[nodiscard]]
+    bool isMouseHover() const noexcept
+    {
+        return mHovered;
+    }
+
+    [[nodiscard]]
+    bool isPressed() const noexcept
+    {
+        return !mPressed.empty();
+    }
+
+    [[nodiscard]]
+    bool isPressed(APointerIndex index) const noexcept
+    {
+        return mPressed.contains(index);
+    }
+
+    bool isFocused() const {
+        return mHasFocus;
+    }
+    bool isMouseEntered() const {
+        return mMouseEntered;
     }
 
     /**
@@ -1012,6 +1062,23 @@ signals:
 
 protected:
     /**
+     * @brief Measures the view.
+     * @param availableSize available size for the view.
+     * @details
+     * Override this method to implement custom measurement logic. Call setMeasuredDimension() to set the result.
+     * The availableSize parameter uses 0 to indicate unconstrained dimension.
+     */
+    virtual void onMeasure(glm::ivec2 availableSize);
+
+    /**
+     * @brief Sets measured dimension. Should be called from onMeasure.
+     * @param size measured size.
+     */
+    void setMeasuredDimension(glm::ivec2 size) noexcept {
+        mMeasuredSize = size;
+    }
+
+    /**
      * @brief Parent AView.
      */
     AViewContainerBase* mParent = nullptr;
@@ -1155,6 +1222,10 @@ protected:
     virtual void commitStyle();
 
 private:
+    glm::ivec2 mMeasuredSize = { 0, 0 };
+    glm::ivec2 mLatestMeasureAvailableSize = { -1, -1 };
+    bool mIsMeasured = false;
+
     /**
      * @brief Animation.
      */
@@ -1255,6 +1326,13 @@ private:
      * @brief Floating value for AText.
      */
     AFloat mFloating = AFloat::NONE;
+
+
+    float mFlexGrow = 0.0f;
+    float mFlexShrink = 1.0f;
+    AOptional<AMetric> mFlexBasis;
+    AFlexAlignItems mAlignSelf = AFlexAlignItems::AUTO;
+    int mOrder = 0;
 
     struct RenderToTexture {
         _unique<IRenderViewToTexture> rendererInterface;

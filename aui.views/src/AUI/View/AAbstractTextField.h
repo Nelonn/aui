@@ -28,7 +28,7 @@ public:
 
     ~AAbstractTextField() override;
 
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
 
     void setText(const AString& t) override;
 

@@ -24,7 +24,7 @@ protected:
     void commitStyle() override { AView::commitStyle(); }
 };
 
-using namespace declarative;
+using namespace aui::declarative;
 
 class UIStyleTest : public testing::UITest {
 public:

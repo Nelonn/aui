@@ -42,7 +42,7 @@ public:
     void setModel(const _<ITreeModel<AString>>& model);
     void onScroll(const AScrollEvent& event) override;
     void setSize(glm::ivec2 size) override;
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
     void handleMouseMove(ItemView* pView);
 
     void setViewFactory(const std::function<_<AView>(const _<ITreeModel<AString>>&, const ATreeModelIndex&)>& viewFactory) {

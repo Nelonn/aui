@@ -25,7 +25,7 @@
 #include "AUI/Model/AListModel.h"
 #include "AUI/View/ANumberPicker.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 class UIDataBindingTest : public testing::UITest {
 };
@@ -178,7 +178,7 @@ TEST_F(UIDataBindingTest, Label_via_let) { // HEADER_H3
     // Use `AUI_LET` expression to connect the model's username property to the label's [text()](ALabel::text)
     // property.
     // AUI_DOCS_CODE_BEGIN
-    using namespace declarative;
+    using namespace aui::declarative;
 
     struct User {
         AProperty<AString> name;
@@ -237,7 +237,7 @@ TEST_F(UIDataBindingTest, Label_via_let) { // HEADER_H3
 
 TEST_F(UIDataBindingTest, Label_via_let_projection) { // HEADER_H3
     // It's fairly easy to define a projection because one-sided connection requires exactly one projection, obviously.
-    using namespace declarative;
+    using namespace aui::declarative;
 
     struct User {
         AProperty<AString> name;
@@ -297,7 +297,7 @@ TEST_F(UIDataBindingTest, Bidirectional_connection) { // HEADER_H3
     // For this example, let's use ATextField instead of ALabel as it's an editable view. In this case, we'd want to use
     // `AObject::biConnect` because we do want `user->name` to be aware of changes of the view.
 
-    using namespace declarative;
+    using namespace aui::declarative;
 
     struct User {
         AProperty<AString> name;
@@ -379,7 +379,7 @@ AUI_ENUM_VALUES(Gender,
 // The example below is essentially the same as [UIDataBindingTest_Label_via_let] but uses declarative connection set up syntax.
 TEST_F(UIDataBindingTest, Label_via_declarative) { // HEADER_H3
     // AUI_DOCS_CODE_BEGIN
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -458,7 +458,7 @@ TEST_F(UIDataBindingTest, ADataBindingDefault_for_omitting_view_property) { // H
     // ```
     //
     // We can use this predefined specialization to omit the destination property:
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -515,7 +515,7 @@ TEST_F(UIDataBindingTest, ADataBindingDefault_for_omitting_view_property) { // H
 }
 
 TEST_F(UIDataBindingTest, ADataBindingDefault_strong_type_propagation) { // HEADER_H3
-    using namespace declarative;
+    using namespace aui::declarative;
 
     //
     // !!! failure "Deprecated"
@@ -598,7 +598,7 @@ TEST_F(UIDataBindingTest, ADataBindingDefault_strong_type_propagation) { // HEAD
 TEST_F(UIDataBindingTest, Label_via_declarative_projection) { // HEADER_H3
     // We can use projections in the same way as with `AUI_LET`.
     // AUI_DOCS_CODE_BEGIN
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -638,7 +638,7 @@ TEST_F(UIDataBindingTest, Label_via_declarative_projection) { // HEADER_H3
 }
 
 TEST_F(UIDataBindingTest, Declarative_custom_slot1) {
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -669,7 +669,7 @@ TEST_F(UIDataBindingTest, Declarative_custom_slot1) {
 }
 
 TEST_F(UIDataBindingTest, Declarative_custom_slot2) {
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -698,7 +698,7 @@ TEST_F(UIDataBindingTest, Declarative_custom_slot2) {
 }
 
 TEST_F(UIDataBindingTest, Declarative_custom_slot3) {
-    using namespace declarative;
+    using namespace aui::declarative;
     struct User {
         AProperty<AString> name;
     };
@@ -734,7 +734,7 @@ TEST_F(UIDataBindingTest, Declarative_bidirectional_connection) { // HEADER_H3
     // In some cases, you might want to use property-to-property as it's bidirectional. It's used for populating view
     // from model and obtaining data from view back to the model.
 
-    using namespace declarative;
+    using namespace aui::declarative;
 
     struct User {
         AProperty<AString> name;

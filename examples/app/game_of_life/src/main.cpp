@@ -18,7 +18,7 @@
 #include <AUI/View/AScrollArea.h>
 #include <AUI/View/ATextArea.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 using namespace std::chrono_literals;
 

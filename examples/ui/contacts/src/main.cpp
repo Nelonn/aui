@@ -26,7 +26,7 @@
 #include "AUI/Platform/AMessageBox.h"
 #include "AUI/View/Dynamic.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 using namespace std::chrono_literals;
 

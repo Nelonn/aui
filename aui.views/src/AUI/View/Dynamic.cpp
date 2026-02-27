@@ -12,7 +12,7 @@ public:
 };
 }
 
-namespace declarative::experimental {
+namespace aui::declarative::experimental {
 
 _<AView> Dynamic::operator()() {
     auto v = _new<DynamicView>();

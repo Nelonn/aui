@@ -14,7 +14,7 @@
 #include <AUI/Util/Declarative/Concepts.h>
 #include <AUI/Common/React.h>
 
-namespace declarative::contract {
+namespace aui::declarative::contract {
 
 /**
  * @brief Denotes a potentially reactive value in declarative contracts.
@@ -141,4 +141,4 @@ private:
     std::function<void(emits<Args...>& signal)> mSetup;
 };
 
-}   // namespace declarative::contract
+}   // namespace aui::declarative::contract

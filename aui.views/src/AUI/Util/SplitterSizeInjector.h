@@ -32,6 +32,14 @@ struct SizeInjector {
     ASPLITTER_IMPL_FORWARD_METHOD(getSize)
     ASPLITTER_IMPL_FORWARD_METHOD(getFixedSize)
     ASPLITTER_IMPL_FORWARD_METHOD(getMaxSize)
+    ASPLITTER_IMPL_FORWARD_METHOD(getMeasuredSize)
+    ASPLITTER_IMPL_FORWARD_METHOD(getMinimumHeightForWidth)
+    ASPLITTER_IMPL_FORWARD_METHOD(getMinimumWidthForHeight)
+
+    template<typename... Args>
+    auto measure(Args&&... args) const {
+        return item.view->measure(std::forward<Args>(args)...);
+    }
 
     glm::ivec2 getMinimumSize() const {
         auto size = item.view->getMinimumSize();

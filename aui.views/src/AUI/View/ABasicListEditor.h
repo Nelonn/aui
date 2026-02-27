@@ -62,7 +62,7 @@ public:
         }
 
         _<ABasicListEditor> buildContainer() {
-            using namespace declarative;
+            using namespace aui::declarative;
             auto c = _new<ABasicListEditor>();
             auto list = _new<AListView>(mModel);
             list AUI_OVERRIDE_STYLE { ass::MinSize { 200_dp, {} } };

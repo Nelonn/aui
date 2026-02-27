@@ -14,7 +14,7 @@
 #include "DevtoolsThreadsTab.h"
 #include <AUI/View/AScrollArea.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 using namespace std::chrono_literals;
 

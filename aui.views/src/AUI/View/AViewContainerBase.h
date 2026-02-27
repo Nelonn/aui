@@ -96,9 +96,7 @@ public:
 
     void onClickPrevented() override;
 
-    int getContentMinimumWidth() override;
-
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
 
     void onPointerPressed(const APointerPressedEvent& event) override;
 
@@ -113,6 +111,8 @@ public:
     bool consumesClick(const glm::ivec2& pos) override;
 
     void setSize(glm::ivec2 size) override;
+
+    void onMeasure(glm::ivec2 availableSize) override;
 
     void setEnabled(bool enabled = true) override;
 

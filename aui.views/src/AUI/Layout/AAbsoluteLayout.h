@@ -12,6 +12,7 @@
 #pragma once
 
 #include "ALinearLayout.h"
+#include <AUI/Util/Declarative/Containers.h>
 
 namespace aui::detail {
     struct AbsoluteLayoutCell {
@@ -31,16 +32,27 @@ namespace aui::detail {
  */
 class API_AUI_VIEWS AAbsoluteLayout: public ALinearLayout<aui::detail::AbsoluteLayoutCell> {
 public:
-    void onResize(int x, int y, int width, int height) override;
+    void performLayout(int x, int y, int width, int height) override;
 
     void add(aui::detail::AbsoluteLayoutCell cell);
 
     void addView(const _<AView>& view, AOptional<size_t> index) override;
 
-    int getMinimumWidth() override;
-    int getMinimumHeight() override;
+    glm::ivec2 getMinimumSize() override;
 
 private:
     using ViewInfo = aui::detail::AbsoluteLayoutCell;
 };
 
+namespace aui::declarative {
+/**
+ * @brief Places views according to specified xy coordinates.
+ * <p>
+ *  <dl>
+ *    <dt><b>View:</b> AViewContainer</dt>
+ *    <dt><b>Layout manager:</b> AAbsoluteLayout</dt>
+ *  </dl>
+ * </p>
+ */
+using Absolute = aui::ui_building::view_container_layout<AAbsoluteLayout>;
+}

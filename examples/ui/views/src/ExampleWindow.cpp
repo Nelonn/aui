@@ -75,7 +75,7 @@
 #include <AUI/View/ADrawableView.h>
 #include <AUI/Traits/platform.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 void fillWindow(_<AViewContainer> t) {
     t->setLayout(std::make_unique<AStackedLayout>());

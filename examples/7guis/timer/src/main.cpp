@@ -16,7 +16,7 @@
 #include "AUI/View/ASlider.h"
 #include "AUI/View/AButton.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 
 using namespace std::chrono;
 using namespace std::chrono_literals;

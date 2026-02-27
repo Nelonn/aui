@@ -290,7 +290,7 @@ class AViewContainer;
  * AWindow::redraw()
  * └─> AWindow::applyGeometryToChildrenIfNecessary()
  *     └─> AWindow::applyGeometryToChildren()
- *         └─> ALayout::onResize()                                                  ┐
+ *         └─> ALayout::performLayout()                                                  ┐
  *             └─> AViewContainerBase::getMinimumSize()              ┐              │
  *                 └─> AViewContainerBase::getContentMinimumWidth()  │              │
  *                     └─> ALayout::getMinimumWidth()                │              │
@@ -302,7 +302,7 @@ class AViewContainer;
  *                 └─> AViewContainerBase::setSize()                                │
  *                     └─> AViewContainerBase::applyGeometryToChildrenIfNecessary() │
  *                         └─> AViewContainerBase::applyGeometryToChildren()        │
- *                             └─> ALayout::onResize()                              ┘
+ *                             └─> ALayout::performLayout()                              ┘
  *                                 └─> AView::setGeometry()
  * ```
  *
@@ -314,7 +314,7 @@ class AViewContainer;
  *   only if really needed (i.e., if there were a resize event, or views were added or removed)
  * - [applyGeometryToChildren](AViewContainerBase::applyGeometryToChildren) - applies geometry to its children with
  *   no preconditions
- * - [ALayout::onResize] - implemented by layout manager, whose have their own algorithms of arranging views
+ * - [ALayout::performLayout] - implemented by layout manager, whose have their own algorithms of arranging views
  * - [AView::setGeometry] - sets geometry of a view (which might be a container)
  *
  * ### Size calculation { #SIZE_CALCULATION }
@@ -355,7 +355,7 @@ public:
      * @details
      * See [layout-managers] for more info.
      */
-    virtual void onResize(int x, int y, int width, int height) = 0;
+    virtual void performLayout(int x, int y, int width, int height) = 0;
 
     /**
      * @brief Attaches view to the layout.
@@ -377,8 +377,22 @@ public:
      */
     virtual void removeView(aui::no_escape<AView> view, size_t index) = 0;
 
-    virtual int getMinimumWidth() = 0;
-    virtual int getMinimumHeight() = 0;
+    /**
+     * @brief Measures the layout and all child views.
+     * @param availableSize available size for the layout.
+     * @details
+     * Call this method before performLayout() to measure all child views. The measured sizes are cached and used
+     * by performLayout() and getMinimumSize() for better performance.
+     */
+    virtual void measure(glm::ivec2 availableSize) = 0;
+
+    /**
+     * @brief Returns minimum size required by the layout.
+     * @details
+     * Uses cached measured sizes when available for better performance. Call measure() before calling this method
+     * during layout passes.
+     */
+    virtual glm::ivec2 getMinimumSize() = 0;
 
     /**
      * @brief Visits all views in the layout.

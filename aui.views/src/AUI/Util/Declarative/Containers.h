@@ -14,10 +14,6 @@
 #include <AUI/Util/Declarative/Concepts.h>
 #include <AUI/Layout/AAdvancedGridLayout.h>
 #include <AUI/View/ALabel.h>
-#include <AUI/Layout/AVerticalLayout.h>
-#include <AUI/Layout/AHorizontalLayout.h>
-#include <AUI/Layout/AStackedLayout.h>
-#include <AUI/Layout/AAbsoluteLayout.h>
 
 namespace aui::ui_building {
 
@@ -185,7 +181,7 @@ using view_container_layout = detail::layouted_container_factory<Layout, Contain
 
 }   // namespace aui::ui_building
 
-namespace declarative {
+namespace aui::declarative {
 
 /**
  * @brief Extra styles wrapper.
@@ -238,7 +234,7 @@ AUI_DETAIL_BINARY_OP(^) // forwards let
 AUI_DETAIL_BINARY_OP(<<) // forwards stylesheet name assignment
 
 
-namespace declarative {
+namespace aui::declarative {
 template <typename Layout, typename... Args>
 inline auto _container(aui::ui_building::ViewGroup views, Args&&... args) {
     auto c = _new<AViewContainer>();
@@ -267,56 +263,6 @@ inline auto _form(const AVector<std::pair<std::variant<AString, _<AView>>, _<AVi
 }
 
 /**
- * @brief Places views in a column.
- * <p>
- *  <img width="960" src="https://github.com/aui-framework/aui/raw/master/docs/imgs/vertical.jpg">
- *
- *  <dl>
- *    <dt><b>View:</b> AViewContainer</dt>
- *    <dt><b>Layout manager:</b> AVerticalLayout</dt>
- *  </dl>
- * </p>
- */
-using Vertical = aui::ui_building::view_container_layout<AVerticalLayout>;
-
-/**
- * @brief Places views in a row.
- * <p>
- *  <img width="960" src="https://github.com/aui-framework/aui/raw/master/docs/imgs/horizontal.jpg">
- *
- *  <dl>
- *    <dt><b>View:</b> AViewContainer</dt>
- *    <dt><b>Layout manager:</b> AHorizontalLayout</dt>
- *  </dl>
- * </p>
- */
-using Horizontal = aui::ui_building::view_container_layout<AHorizontalLayout>;
-
-/**
- * @brief Places views in a stack, centering them.
- * <p>
- *  <img width="960" src="https://github.com/aui-framework/aui/raw/master/docs/imgs/stacked2.jpg">
- *
- *  <dl>
- *    <dt><b>View:</b> AViewContainer</dt>
- *    <dt><b>Layout manager:</b> AStackedLayout</dt>
- *  </dl>
- * </p>
- */
-using Stacked = aui::ui_building::view_container_layout<AStackedLayout>;
-
-/**
- * @brief Places views according to specified xy coordinates.
- * <p>
- *  <dl>
- *    <dt><b>View:</b> AViewContainer</dt>
- *    <dt><b>Layout manager:</b> AAbsoluteLayout</dt>
- *  </dl>
- * </p>
- */
-using Absolute = aui::ui_building::view_container_layout<AAbsoluteLayout>;
-
-/**
  * Does not actually set the layout. The views' geometry is determined manually.
  * @deprecated Use AAbsoluteLayout instead.
  * <p>
@@ -328,11 +274,4 @@ using Absolute = aui::ui_building::view_container_layout<AAbsoluteLayout>;
  */
 using CustomLayout = aui::ui_building::view_container_layout<std::nullopt_t>;
 
-/**
- * <p>
- * <code>Center</code> is an alias to Stacked. When Stacked is used only for centering views, you can use
- * this alias in order to improve understanding of your code.
- * </p>
- */
-using Centered = Stacked;
 }

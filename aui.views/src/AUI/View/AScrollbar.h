@@ -55,12 +55,8 @@ public:
 
     }
 
-    int getMinimumWidth() override {
-        return 0;
-    }
-
-    int getMinimumHeight() override {
-        return 0;
+    glm::ivec2 getMinimumSize() override {
+        return { 0, 0 };
     }
 };
 

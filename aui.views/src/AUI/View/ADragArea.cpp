@@ -30,16 +30,16 @@ namespace {
             LinearLayoutImpl::removeView(view, index);
         }
 
-        void onResize(int x, int y, int width, int height) override {
+        void measure(glm::ivec2 availableSize) override {
+            // No-op: DragAreaLayout does not measure children
+        }
+
+        void performLayout(int x, int y, int width, int height) override {
 
         }
 
-        int getMinimumWidth() override {
-            return 0;
-        }
-
-        int getMinimumHeight() override {
-            return 0;
+        glm::ivec2 getMinimumSize() override {
+            return { 0, 0 };
         }
 
         static void markViewToBeCentered(AView& v) {
@@ -140,10 +140,11 @@ void ADragArea::applyGeometryToChildren() {
     for (const auto& v : getViews()) {
         v->ensureAssUpdated();
         auto margins = v->getMargin();
-        auto finalWidth = v->getMinimumWidth() + margins.horizontal();
+        const auto minSize = v->getMinimumSize();
+        auto finalWidth = minSize.x + margins.horizontal();
         auto finalX = (width - finalWidth) / 2;
 
-        auto finalHeight = v->getMinimumHeight() + margins.vertical();
+        auto finalHeight = minSize.y + margins.vertical();
         auto finalY = (height - finalHeight) / 2;
 
         if (DragAreaLayout::isViewMarkedToBeCentered(*v)) {

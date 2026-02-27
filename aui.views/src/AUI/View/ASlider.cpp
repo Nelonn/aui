@@ -19,7 +19,7 @@
 #include "AProgressBar.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 
 namespace {
@@ -51,12 +51,8 @@ public:
         markMinContentSizeInvalid();
     }
 
-    int getMinimumWidth() override {
-        return mHandle->getMinimumWidth();
-    }
-
-    int getMinimumHeight() override {
-        return mHandle->getMinimumHeight();
+    glm::ivec2 getMinimumSize() override {
+        return mHandle->getMinimumSize();
     }
 
     emits<aui::float_within_0_1> valueChanged;

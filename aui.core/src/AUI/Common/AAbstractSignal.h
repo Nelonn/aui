@@ -225,7 +225,7 @@ class AObject;
  *     auto label = _new<ALabel>("-");
  *     auto button = _new<AButton>("Increase");
  *
- *     using namespace declarative;
+ *     using namespace aui::declarative;
  *     setContents(Vertical {
  *       label,
  *       button,
@@ -253,7 +253,7 @@ class AObject;
  * Let's make things more declarative and use [AUI_LET] syntax to set up connections:
  * ```cpp
  * MyApp() {
- *   using namespace declarative;
+ *   using namespace aui::declarative;
  *   setContents(Vertical {
  *     _new<ALabel>("-") AUI_LET {
  *       connect(counter->valueChanged, label, [label = it.get()](int value) {

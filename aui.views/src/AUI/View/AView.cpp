@@ -86,6 +86,8 @@ void AView::markMinContentSizeInvalid()
 {
     AUI_ASSERT_UI_THREAD_ONLY();
     mCachedMinContentSize.reset();
+    mLatestMeasureAvailableSize = { -1, -1 };
+    mIsMeasured = false;
     if (mMarkedMinContentSizeInvalid) {
         // already marked.
         // TODO uncomment this
@@ -96,6 +98,42 @@ void AView::markMinContentSizeInvalid()
     }
     mMarkedMinContentSizeInvalid = true;
     AUI_NULLSAFE(mParent)->markMinContentSizeInvalid();
+}
+
+void AView::measure(glm::ivec2 availableSize) {
+    if (!mMarkedMinContentSizeInvalid && mIsMeasured && mLatestMeasureAvailableSize == availableSize) {
+        return;
+    }
+    mLatestMeasureAvailableSize = availableSize;
+    onMeasure(availableSize);
+    mIsMeasured = true;
+}
+
+void AView::onMeasure(glm::ivec2 availableSize) {
+    // Fast path: use cached minimum size when fully unconstrained
+    if (availableSize.x <= 0 && availableSize.y <= 0) {
+        setMeasuredDimension(getMinimumSize());
+        return;
+    }
+
+    // Measure with one constraint - use minimum size as fallback
+    if (availableSize.x > 0 && availableSize.y <= 0) {
+        auto minSize = getMinimumSize();
+        setMeasuredDimension({ availableSize.x, minSize.y });
+        return;
+    }
+    if (availableSize.y > 0 && availableSize.x <= 0) {
+        auto minSize = getMinimumSize();
+        setMeasuredDimension({ minSize.x, availableSize.y });
+        return;
+    }
+
+    // Both dimensions constrained - use minimum of available and natural size
+    auto minSize = getMinimumSize();
+    setMeasuredDimension({
+        availableSize.x > 0 ? glm::min(availableSize.x, minSize.x) : minSize.x,
+        availableSize.y > 0 ? glm::min(availableSize.y, minSize.y) : minSize.y
+    });
 }
 
 void AView::drawStencilMask(ARenderContext ctx)
@@ -262,12 +300,11 @@ void AView::invalidateStateStylesImpl(glm::ivec2 prevMinimumSizePlusField) {
     redraw();
 }
 
-int AView::getContentMinimumWidth() {
-    return 0;
-}
-
-int AView::getContentMinimumHeight() {
-    return 0;
+glm::ivec2 AView::getContentMinimumSize() {
+    if (!mCachedMinContentSize) {
+        mCachedMinContentSize = { 0, 0 };
+    }
+    return *mCachedMinContentSize;
 }
 
 bool AView::hasFocus() const
@@ -275,14 +312,12 @@ bool AView::hasFocus() const
     return mHasFocus;
 }
 
-int AView::getMinimumWidth() {
+glm::ivec2 AView::getMinimumSize() {
     ensureAssUpdated();
-    return (mFixedSize.x == 0 ? ((glm::clamp)(getContentMinimumSize().x + mPadding.horizontal(), mMinSize.x, mMaxSize.x)) : mFixedSize.x);
-}
-
-int AView::getMinimumHeight() {
-    ensureAssUpdated();
-    return (mFixedSize.y == 0 ? ((glm::clamp)(getContentMinimumSize().y + mPadding.vertical(), mMinSize.y, mMaxSize.y)) : mFixedSize.y);
+    return {
+        (mFixedSize.x == 0 ? ((glm::clamp)(getContentMinimumSize().x + mPadding.horizontal(), mMinSize.x, mMaxSize.x)) : mFixedSize.x),
+        (mFixedSize.y == 0 ? ((glm::clamp)(getContentMinimumSize().y + mPadding.vertical(), mMinSize.y, mMaxSize.y)) : mFixedSize.y)
+    };
 }
 
 void AView::getTransform(glm::mat4& transform) const
@@ -292,7 +327,7 @@ void AView::getTransform(glm::mat4& transform) const
 
 void AView::pack()
 {
-    setSize({ getMinimumWidth(), getMinimumHeight() });
+    setSize(getMinimumSize());
 }
 
 void AView::addAssName(const AString& assName)

@@ -14,7 +14,7 @@
 
 namespace {
 
-using namespace declarative;
+using namespace aui::declarative;
 
 class UIReactiveTest : public testing::UITest {
 public:

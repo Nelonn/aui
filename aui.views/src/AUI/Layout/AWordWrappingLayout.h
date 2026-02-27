@@ -24,11 +24,10 @@ private:
     AVector<AViewEntry> mViewEntry;
 
 public:
-    void onResize(int x, int y, int width, int height) override;
+    void performLayout(int x, int y, int width, int height) override;
+    void measure(glm::ivec2 availableSize) override;
 
-    int getMinimumWidth() override;
-
-    int getMinimumHeight() override;
+    glm::ivec2 getMinimumSize() override;
 
     void addView(const _<AView>& view, AOptional<size_t> index) override;
 

@@ -38,7 +38,7 @@
  *
  * ## API surface
  *
- * <!-- aui:steal_documentation declarative::Label -->
+ * <!-- aui:steal_documentation aui::declarative::Label -->
  *
  * ## Coloring a label
  *
@@ -62,7 +62,7 @@ public:
 
 
 /// [ALabel_declarative_example]
-namespace declarative {
+namespace aui::declarative {
 /**
  * <!-- aui:no_dedicated_page -->
  */

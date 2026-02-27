@@ -21,7 +21,7 @@
 #include <AUI/View/AView.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
 class TestRender: public AView {

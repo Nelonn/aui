@@ -59,15 +59,15 @@ AScrollArea::AScrollArea(const AScrollArea::Builder& builder) {
     });
 }
 
-int AScrollArea::getContentMinimumWidth() {
-    if (getExpandingHorizontal() != 0)
-        return 0;
-    return AViewContainerBase::getContentMinimumWidth() + (contents() ? contents()->getMinimumSizePlusMargin().x : 0);
-}
-int AScrollArea::getContentMinimumHeight() {
-    if (getExpandingVertical() != 0)
-        return 0;
-    return AViewContainerBase::getContentMinimumHeight() + (contents() ? contents()->getMinimumSizePlusMargin().y : 0);
+glm::ivec2 AScrollArea::getContentMinimumSize() {
+    glm::ivec2 minSize = { 0, 0 };
+    if (getExpandingHorizontal() == 0) {
+        minSize.x = AViewContainerBase::getContentMinimumSize().x + (contents() ? contents()->getMinimumSizePlusMargin().x : 0);
+    }
+    if (getExpandingVertical() == 0) {
+        minSize.y = AViewContainerBase::getContentMinimumSize().y + (contents() ? contents()->getMinimumSizePlusMargin().y : 0);
+    }
+    return minSize;
 }
 void AScrollArea::setSize(glm::ivec2 size) {
     AViewContainerBase::setSize(size);

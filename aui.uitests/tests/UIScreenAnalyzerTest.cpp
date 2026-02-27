@@ -15,7 +15,7 @@
 #include <AUI/View/ATextField.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 /**
  * This suite tests aui::uitests' ability to determine what's going on on the screen.

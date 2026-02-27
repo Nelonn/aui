@@ -61,7 +61,19 @@ struct HVLayout {
         return aui::layout_direction::getPerpendicularAxisValue(direction, v);
     }
 
-    static void onResize(glm::ivec2 paddedPosition, glm::ivec2 paddedSize, ranges::range auto&& views, int spacing) {
+    static void measure(glm::ivec2 availableSize, ranges::range auto&& views, int spacing) {
+        for (const auto& view : views) {
+            if (!(view->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
+                continue;
+            if constexpr (direction == ALayoutDirection::VERTICAL) {
+                view->measure({ getPerpAxisValue(availableSize) - view->getMargin().horizontal(), 0 });
+            } else {
+                view->measure({ 0, getPerpAxisValue(availableSize) - view->getMargin().vertical() });
+            }
+        }
+    }
+
+    static void performLayout(glm::ivec2 paddedPosition, glm::ivec2 paddedSize, ranges::range auto&& views, int spacing) {
         static constexpr auto FIXED_POINT_DENOMINATOR = 2 << 4;
 
         if (views.empty())
@@ -70,16 +82,15 @@ struct HVLayout {
         int sum = 0;
         int availableSpaceForExpandingViews = getAxisValue(paddedSize) + spacing;
 
-        // first phase: calculate sum and availableSpaceForExpandingViews
+        // first phase: calculate sum and availableSpaceForExpandingViews using measured sizes
         for (const auto& view : views) {
             view->ensureAssUpdated();
             if (!(view->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
                 continue;
             int expanding = getAxisValue(view->getExpanding());
-            int minSpace = getAxisValue(view->getMinimumSize());
+            int minSpace = getAxisValue(view->getMeasuredSize());
             sum += expanding;
-            if (expanding == 0 || getAxisValue(view->getFixedSize()) != 0)   // expanding view is fixed size is equal to
-                                                                             // non-expanding
+            if (expanding == 0 || getAxisValue(view->getFixedSize()) != 0)
                 availableSpaceForExpandingViews -= minSpace + getAxisValue(view->getMargin().occupiedSize()) + spacing;
             else
                 availableSpaceForExpandingViews -= getAxisValue(view->getMargin().occupiedSize()) + spacing;
@@ -97,12 +108,11 @@ struct HVLayout {
 
                 int expanding = getAxisValue(view->getExpanding());
 
-                if (expanding == 0 || getAxisValue(view->getFixedSize()) != 0)   // expanding view is fixed size is
-                                                                                 // equal to non-expanding
+                if (expanding == 0 || getAxisValue(view->getFixedSize()) != 0)
                     continue;
 
                 int spaceAcquiredByExpanding = availableSpaceForExpandingViews * expanding / sum;
-                int viewMinSize = getAxisValue(view->getMinimumSize());
+                int viewMinSize = getAxisValue(view->getMeasuredSize());
                 auto viewMaxSize = view->getMaxSize();
                 int validatedSpace = glm::clamp(spaceAcquiredByExpanding, viewMinSize, getAxisValue(viewMaxSize));
                 availableSpaceForExpandingViews += (spaceAcquiredByExpanding - validatedSpace) * sum / expanding;
@@ -135,7 +145,7 @@ struct HVLayout {
                     getAxisValue(glm::ivec2 { viewSizePerpAxis, viewSizeOurAxis }));
             } else {
                 int expanding = getAxisValue(view->getExpanding());
-                int viewMinSize = getAxisValue(view->getMinimumSize());
+                int viewMinSize = getAxisValue(view->getMeasuredSize());
                 long long viewEndPos =
                     posOurAxis +
                     glm::clamp(
@@ -155,8 +165,6 @@ struct HVLayout {
                 if (getAxisValue(view->getSize()) == viewSizeOurAxis) {
                     posOurAxis = viewEndPos + (spacing + getAxisValue(margins.occupiedSize())) * FIXED_POINT_DENOMINATOR;
                 } else {
-                    // view has rejected the size we have provided, and we should adopt.
-                    // unfortunately, we lose the fractional part of the size.
                     posOurAxis += (spacing + getAxisValue(view->getSize() + margins.occupiedSize())) * FIXED_POINT_DENOMINATOR;
                 }
                 availableSpaceForExpandingViews += viewSizeOurAxis - getAxisValue(view->getSize());
@@ -164,21 +172,11 @@ struct HVLayout {
         }
     }
 
-    static int getMinimumWidth(ranges::range auto&& views, int spacing) {
+    static glm::ivec2 getMinimumSize(ranges::range auto&& views, int spacing) {
         if constexpr (direction == ALayoutDirection::HORIZONTAL) {
-            return getMinimumSizeOurAxis(views, spacing);
-        }
-        if constexpr (direction == ALayoutDirection::VERTICAL) {
-            return getMinimumSizePerpAxis(views, spacing);
-        }
-    }
-
-    static int getMinimumHeight(ranges::range auto&& views, int spacing) {
-        if constexpr (direction == ALayoutDirection::VERTICAL) {
-            return getMinimumSizeOurAxis(views, spacing);
-        }
-        if constexpr (direction == ALayoutDirection::HORIZONTAL) {
-            return getMinimumSizePerpAxis(views, spacing);
+            return { getMinimumSizeOurAxis(views, spacing), getMinimumSizePerpAxis(views, spacing) };
+        } else {
+            return { getMinimumSizePerpAxis(views, spacing), getMinimumSizeOurAxis(views, spacing) };
         }
     }
 
@@ -187,9 +185,8 @@ private:
         int minSize = -spacing;
 
         for (const auto& v : views) {
-            if (!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
-                continue;
-            minSize += getAxisValue(v->getMinimumSize() + v->getMargin().occupiedSize()) + spacing;
+            if (!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE)) continue;
+            minSize += getAxisValue(v->getMeasuredSize() + v->getMargin().occupiedSize()) + spacing;
         }
 
         return glm::max(minSize, 0);
@@ -200,7 +197,7 @@ private:
         for (const auto& v : views) {
             if (!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
                 continue;
-            auto h = getPerpAxisValue(v->getMinimumSize() + +v->getMargin().occupiedSize());
+            auto h = getPerpAxisValue(v->getMeasuredSize() + v->getMargin().occupiedSize());
             minSize = glm::max(minSize, int(h));
         }
         return minSize;

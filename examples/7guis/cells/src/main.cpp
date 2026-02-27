@@ -18,7 +18,7 @@
 #include "AUI/View/AGridSplitter.h"
 #include "Spreadsheet.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 
 struct State {

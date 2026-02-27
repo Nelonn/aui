@@ -57,7 +57,7 @@
 #include "glm/vector_relational.hpp"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 static constexpr auto LOG_TAG = "DevtoolsPointerInspect";
 
@@ -85,18 +85,11 @@ public:
         drawView(view, ctx);
     }
 
-    int getContentMinimumWidth() override {
+    glm::ivec2 getContentMinimumSize() override {
         if (auto view = mView.lock()) {
-            return view->getContentMinimumWidth();
+            return view->getContentMinimumSize();
         }
-        return AViewContainerBase::getContentMinimumWidth();
-    }
-
-    int getContentMinimumHeight() override {
-        if (auto view = mView.lock()) {
-            return view->getContentMinimumHeight();
-        }
-        return AViewContainerBase::getContentMinimumHeight();
+        return AViewContainerBase::getContentMinimumSize();
     }
 
     [[nodiscard]]
@@ -150,7 +143,7 @@ private:
 };
 }
 
-using namespace declarative;
+using namespace aui::declarative;
 
 DevtoolsPointerInspect::DevtoolsPointerInspect(AWindowBase* targetWindow) : mTargetWindow(targetWindow) {
     setContents(Vertical {

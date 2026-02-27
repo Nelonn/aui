@@ -18,7 +18,7 @@
 #include "AUI/View/ATextField.h"
 #include "AUI/Platform/AMessageBox.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace std::chrono;
 
 constexpr auto REGEX_DATE = ctre::match<"([0-9]+)\\.([0-9]+)\\.([0-9]{4})">;

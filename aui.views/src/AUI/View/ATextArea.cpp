@@ -544,7 +544,7 @@ void ATextArea::fillStringCanvas(const _<IRenderer::IMultiStringCanvas>& canvas)
                                 getFontStyle().getAscenderHeight() + getFontStyle().getDescenderHeight()
     };
     if (mVerticalAlign == VerticalAlign::MIDDLE) {
-        ascender.y += (getContentHeight() - this->getContentMinimumHeight()) / 2;
+        ascender.y += (getContentHeight() - this->getContentMinimumSize().y) / 2;
     }
 
     auto wordEntries = entities()

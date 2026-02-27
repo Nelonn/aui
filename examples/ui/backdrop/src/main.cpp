@@ -22,7 +22,7 @@
 #include "AUI/View/AText.h"
 #include "AUI/View/ADrawableView.h"
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 
 static auto headerWithContents(_<AView> content) {

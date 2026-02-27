@@ -31,7 +31,7 @@ public:
     bool consumesClick(const glm::ivec2& pos) override;
 };
 
-namespace declarative {
+namespace aui::declarative {
 /**
  * @declarativeformof{ASpacerExpanding}
  */

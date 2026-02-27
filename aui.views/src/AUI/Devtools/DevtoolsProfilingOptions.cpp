@@ -17,7 +17,7 @@
 #include "AUI/Platform/APlatform.h"
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
 _<AView> coloredRect(AColor c) {

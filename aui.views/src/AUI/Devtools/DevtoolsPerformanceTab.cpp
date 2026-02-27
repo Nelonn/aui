@@ -51,7 +51,7 @@
 using namespace std::chrono;
 using namespace std::chrono_literals;
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 namespace {
 #if AUI_PROFILING
@@ -304,7 +304,7 @@ namespace {
 
 
 DevtoolsPerformanceTab::DevtoolsPerformanceTab(AWindowBase* targetWindow) : mTargetWindow(targetWindow) {
-    using namespace declarative;
+    using namespace aui::declarative;
 
 #if AUI_PROFILING
     connect(targetWindow->performanceFrameComplete, [this](const APerformanceSection::Datas& frame) {

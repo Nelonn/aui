@@ -132,7 +132,8 @@ void AWindow::flagRedraw() {
 void AWindow::setSize(glm::ivec2 size) {
     auto s = static_cast<NSWindow*>(mHandle);
     float dpi = getDpiRatio();
-    [s setMinSize:NSSizeFromCGSize({getMinimumWidth() / dpi, getMinimumHeight() / dpi})];
+    auto minSize = getMinimumSize();
+    [s setMinSize:NSSizeFromCGSize({minSize.x / dpi, minSize.y / dpi})];
     [s setMaxSize:NSSizeFromCGSize({getMaxSize().x / dpi, getMaxSize().y / dpi})];
     [s setContentSize:NSSizeFromCGSize({size.x / dpi, size.y / dpi})];
 }

@@ -30,7 +30,7 @@
 #include "AUI/View/ATextArea.h"
 
 static _<AView> radioButtonsDemo() {
-    using namespace declarative;
+    using namespace aui::declarative;
     using namespace ass;
     auto selection = _new<AProperty<int>>(0);
     return Vertical {
@@ -59,7 +59,7 @@ static _<AView> radioButtonsDemo() {
 
 
 static _<AView> checkBoxesDemo() {
-    using namespace declarative;
+    using namespace aui::declarative;
     using namespace ass;
     struct State {
         AProperty<bool> checked1 = false, checked2 = true;
@@ -84,7 +84,7 @@ static _<AView> checkBoxesDemo() {
 }
 
 static _<AView> uiBenchmarkScene() {
-    using namespace declarative;
+    using namespace aui::declarative;
     using namespace ass;
 
     return Horizontal {

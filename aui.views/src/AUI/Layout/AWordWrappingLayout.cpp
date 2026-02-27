@@ -36,21 +36,25 @@ void AWordWrappingLayout::removeView(aui::no_escape<AView> view, size_t index) {
     mViewEntry.removeAt(index);
 }
 
-
-
-int AWordWrappingLayout::getMinimumWidth() {
-    return 0;
+void AWordWrappingLayout::measure(glm::ivec2 availableSize) {
+    // Measure all children with available width (word wrapping layout)
+    for (auto& v : mViews) {
+        if (!(v->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
+            continue;
+        v->measure({ availableSize.x - v->getMargin().horizontal(), 0 });
+    }
 }
 
-int AWordWrappingLayout::getMinimumHeight() {
+glm::ivec2 AWordWrappingLayout::getMinimumSize() {
     int m = 0;
     for (auto& view : mViews) {
-        m = (glm::max)(view->getPosition().y + view->getSize().y, m);
+        // Use measured size for better performance
+        m = (glm::max)(view->getPosition().y + view->getMeasuredSize().y, m);
     }
-    return m;
+    return { 0, m };
 }
 
-void AWordWrappingLayout::onResize(int x, int y, int width, int height) {
+void AWordWrappingLayout::performLayout(int x, int y, int width, int height) {
     AVector<_<AWordWrappingEngineBase::Entry>> entries;
     for (auto& v : mViewEntry) {
         entries << aui::ptr::fake_shared(&v);

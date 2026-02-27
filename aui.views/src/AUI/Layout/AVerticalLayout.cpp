@@ -20,16 +20,16 @@
 
 using HVLayout = aui::HVLayout<ALayoutDirection::VERTICAL>;
 
-void AVerticalLayout::onResize(int x, int y, int width, int height) {
-    HVLayout::onResize({ x, y }, { width, height }, mViews, mSpacing);
+void AVerticalLayout::performLayout(int x, int y, int width, int height) {
+    HVLayout::performLayout({ x, y }, { width, height }, mViews, mSpacing);
 }
 
-int AVerticalLayout::getMinimumWidth() {
-    return HVLayout::getMinimumWidth(mViews, mSpacing);
+void AVerticalLayout::measure(glm::ivec2 availableSize) {
+    HVLayout::measure(availableSize, mViews, mSpacing);
 }
 
-int AVerticalLayout::getMinimumHeight() {
-    return HVLayout::getMinimumHeight(mViews, mSpacing);
+glm::ivec2 AVerticalLayout::getMinimumSize() {
+    return HVLayout::getMinimumSize(mViews, mSpacing);
 }
 
 void AVerticalLayout::setSpacing(int spacing) {

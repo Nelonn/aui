@@ -19,7 +19,7 @@
 #include <AUI/View/ATextArea.h>
 
 using namespace ass;
-using namespace declarative;
+using namespace aui::declarative;
 
 static constexpr auto EDITOR_CONTENT_MAX_WIDTH = 400_dp;
 

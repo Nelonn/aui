@@ -83,7 +83,7 @@ protected:
     }
 };
 
-using namespace declarative;
+using namespace aui::declarative;
 using namespace ass;
 
 struct Item {

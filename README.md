@@ -95,7 +95,7 @@ aui_link(${PROJECT_NAME} PRIVATE aui::core aui::views)
 #include <AUI/View/AButton.h>
 #include <AUI/Platform/APlatform.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 AUI_ENTRY {
     auto w = _new<AWindow>("Window title", 300_dp, 200_dp);

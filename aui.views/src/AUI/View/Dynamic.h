@@ -3,7 +3,7 @@
 #include "AAbstractTypeableView.h"
 #include <AUI/Util/Declarative/Contracts.h>
 
-namespace declarative::experimental {
+namespace aui::declarative::experimental {
 /**
  * @brief A view that exposes a contract::In<_<AView>> to provide dynamic content.
  *

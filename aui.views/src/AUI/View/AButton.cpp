@@ -12,7 +12,7 @@
 #include "AButton.h"
 #include <AUI/Platform/AWindow.h>
 
-using namespace declarative;
+using namespace aui::declarative;
 
 AButton::AButton() {
 }

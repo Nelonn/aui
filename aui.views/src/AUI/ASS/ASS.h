@@ -376,6 +376,11 @@
 #include "Property/Visibility.h"
 #include "Property/ATextOverflow.h"
 #include "Property/ScrollbarAppearance.h"
+#include "Property/FlexGrow.h"
+#include "Property/FlexShrink.h"
+#include "Property/FlexBasis.h"
+#include "Property/FlexOrder.h"
+#include "Property/AlignSelf.h"
 
 #include <AUI/ASS/AAssHelper.h>
 
@@ -400,6 +405,6 @@
 #include "PropertyListRecursive.h"
 
 
-namespace declarative {
+namespace aui::declarative {
     using namespace ass;
 }

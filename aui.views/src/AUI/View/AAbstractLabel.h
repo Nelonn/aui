@@ -46,8 +46,7 @@ public:
 
     void render(ARenderContext context) override;
     void doRenderText(IRenderer& render);
-    int getContentMinimumWidth() override;
-    int getContentMinimumHeight() override;
+    glm::ivec2 getContentMinimumSize() override;
 
     const _<IDrawable>& getIcon() const {
         return mIcon;
