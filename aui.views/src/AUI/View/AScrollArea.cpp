@@ -33,14 +33,17 @@ AScrollArea::AScrollArea(const AScrollArea::Builder& builder) {
     setLayout(std::make_unique<AAdvancedGridLayout>(2, 2));
 
     addView(mInner = _new<AScrollAreaViewport>());
+    mInner->setExpanding();  // viewport should expand to fill available space
     if (!builder.mExternalVerticalScrollbar) {
         addView(mVerticalScrollbar = _new<AScrollbar>(ALayoutDirection::VERTICAL));
+        mVerticalScrollbar->setExpanding(0);  // scrollbar should not expand, only take needed space
     } else {
         mVerticalScrollbar = builder.mExternalVerticalScrollbar;
     }
 
     if (!builder.mExternalHorizontalScrollbar) {
         addView(mHorizontalScrollbar = _new<AScrollbar>(ALayoutDirection::HORIZONTAL));
+        mHorizontalScrollbar->setExpanding(0);  // scrollbar should not expand, only take needed space
     } else {
         mHorizontalScrollbar = builder.mExternalHorizontalScrollbar;
     }
@@ -69,13 +72,20 @@ glm::ivec2 AScrollArea::getContentMinimumSize() {
     }
     return minSize;
 }
+
 void AScrollArea::setSize(glm::ivec2 size) {
     AViewContainerBase::setSize(size);
     mInner->applyGeometryToChildrenIfNecessary();
     if (contents()) {
-        mVerticalScrollbar->setScrollDimensions(mInner->getHeight(), contents()->getMinimumSizePlusMargin().y);
-
-        mHorizontalScrollbar->setScrollDimensions(mInner->getWidth(), contents()->getMinimumSizePlusMargin().x);
+        // Viewport size is the visible area (AScrollAreaViewport's size)
+        // Full size is the content size (mInner's size, which is content's natural size)
+        int viewportHeight = getHeight();
+        int contentHeight = mInner->getSize().y;
+        int viewportWidth = getWidth();
+        int contentWidth = mInner->getSize().x;
+        
+        mVerticalScrollbar->setScrollDimensions(viewportHeight, contentHeight);
+        mHorizontalScrollbar->setScrollDimensions(viewportWidth, contentWidth);
     }
 }
 

@@ -42,8 +42,12 @@ void AScrollAreaViewport::setContents(_<AView> content) {
 }
 
 void AScrollAreaViewport::applyGeometryToChildren() {
-    AViewContainerBase::applyGeometryToChildren();
-    mInner->setSize(glm::max(mInner->getMinimumSize(), getSize()));
+    // Size mInner to content's minimum size (natural size), not viewport size
+    // This ensures content is not compressed and scrollbar can calculate correct dimensions
+    // Must be done BEFORE applying geometry to children so layout uses correct size
+    glm::ivec2 contentMinSize = mContents ? mContents->getMinimumSize() : glm::ivec2(0, 0);
+    mInner->setSize(glm::max(contentMinSize, getSize()));
+    
     if (mInner->getSize().x * mInner->getSize().y >= RENDER_TO_TEXTURE_THRESHOLD_AREA) {
         if (!IRenderViewToTexture::isEnabledForView(*mInner)) {
             auto w = AWindow::current();

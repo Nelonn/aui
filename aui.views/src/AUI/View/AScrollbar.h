@@ -91,6 +91,8 @@ public:
 
     void onScroll(const AScrollEvent& event) override;
 
+    glm::ivec2 getContentMinimumSize() override;
+
     /**
      * @brief Set stick to end.
      * @param stickToEnd

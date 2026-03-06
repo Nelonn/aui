@@ -234,8 +234,10 @@ public:
 
     void onMeasure(glm::ivec2 availableSize) override {
         int w = availableSize.x;
-        if (w == 0) {
-            w = getMinimumSize().x;
+        
+        // If width is unconstrained (0) or text is not expanding horizontally, use natural width
+        if (w == 0 || (expanding()->x == 0 && mFixedSize.x == 0)) {
+            w = getContentMinimumSize().x;
         }
 
         mEngine.setTextAlign(getFontStyle().align);

@@ -77,6 +77,22 @@ void AScrollbar::setOffset(size_t o) {
     }
 }
 
+glm::ivec2 AScrollbar::getContentMinimumSize() {
+    // Scrollbar has a fixed thickness (15dp) and needs minimum length to be usable
+    const int thickness = 15_dp;
+    const int minLength = 30_dp;  // minimum length for scrollbar to be visible/clickable
+    
+    switch (mDirection) {
+        case ALayoutDirection::VERTICAL:
+            return { thickness, minLength };  // fixed width, minimum height
+        case ALayoutDirection::HORIZONTAL:
+            return { minLength, thickness };  // minimum width, fixed height
+        case ALayoutDirection::NONE:
+            break;
+    }
+    return { thickness, thickness };
+}
+
 void AScrollbar::setScrollDimensions(size_t viewportSize, size_t fullSize) {
     if (std::tie(mViewportSize, mFullSize) == std::tie(viewportSize, fullSize)) {
         return;
@@ -101,6 +117,12 @@ void AScrollbar::setScrollDimensions(size_t viewportSize, size_t fullSize) {
     if (!isOverflowing) {
         disable();
     }
+    
+    // Debug: log dimensions
+    // ALogger::debug() << "Scrollbar " << (mDirection == ALayoutDirection::VERTICAL ? "V" : "H") 
+    //                  << " viewport=" << viewportSize << " full=" << fullSize 
+    //                  << " overflow=" << isOverflowing 
+    //                  << " size=" << getWidth() << "x" << getHeight();
 }
 
 void AScrollbar::updateScrollHandleSize() {
@@ -314,6 +336,10 @@ void AScrollbarHandle::setSize(glm::ivec2 size) {
 
 void AScrollbar::setSize(glm::ivec2 size) {
     AViewContainerBase::setSize(size);
+    // Debug: ensure size is valid
+    if (size.x <= 0 || size.y <= 0) {
+        // ALogger::warn() << "Scrollbar got invalid size: " << size.x << "x" << size.y;
+    }
     updateScrollHandleSize();
 }
 

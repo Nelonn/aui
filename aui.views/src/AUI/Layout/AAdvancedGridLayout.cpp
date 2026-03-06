@@ -238,17 +238,27 @@ glm::ivec2 AAdvancedGridLayout::getMinimumSize()
 }
 
 void AAdvancedGridLayout::measure(glm::ivec2 availableSize) {
-    // Calculate cell sizes based on available space
-    float cellWidth = static_cast<float>(availableSize.x) / cellsX;
-    float cellHeight = static_cast<float>(availableSize.y) / cellsY;
-
+    // First pass: measure non-expanding views with their minimum size
+    // Second pass: measure expanding views with remaining space
     for (auto& v : mCells) {
         if (!(v.view->getVisibility() & Visibility::FLAG_CONSUME_SPACE))
             continue;
-        v.view->measure({
-            glm::round(cellWidth) - v.view->getMargin().horizontal(),
-            glm::round(cellHeight) - v.view->getMargin().vertical()
-        });
+        
+        auto minSize = v.view->getMinimumSize();
+        auto expanding = v.view->getExpanding();
+        
+        // If view is not expanding, measure with its minimum size
+        // If view is expanding, measure with available cell space
+        if (expanding.x == 0 && expanding.y == 0) {
+            v.view->measure({ 0, 0 });
+        } else {
+            float cellWidth = static_cast<float>(availableSize.x) / cellsX;
+            float cellHeight = static_cast<float>(availableSize.y) / cellsY;
+            v.view->measure({
+                glm::round(cellWidth) - v.view->getMargin().horizontal(),
+                glm::round(cellHeight) - v.view->getMargin().vertical()
+            });
+        }
     }
 }
 
