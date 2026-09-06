@@ -758,3 +758,24 @@ TEST_F(UILayoutTest, ExpandingDoesNotAffectParent2) {
     settleLayout();
     EXPECT_EQ(*wrapper->size(), glm::ivec2(0)); // no content -> zero size.
 }
+
+TEST_F(UILayoutTest, RelayoutHappens) {
+    // 1. we create an empty label (whose instrinsic width=0)
+    auto label = _new<ALabel>("");
+    inflate(
+        Stacked {
+          label,
+        } AUI_OVERRIDE_STYLE { FixedSize { 64_dp, 64_dp } });
+
+    settleLayout();
+    EXPECT_EQ(label->getSize().x, 0);
+    EXPECT_EQ(label->getPosition().x, 32);
+
+    // 2. we update label text so it grows.
+    label->setText("55");
+
+    // 3. verify label geometry was changed.
+    EXPECT_GE(label->getSize().x, 0);
+    EXPECT_LE(label->getPosition().x, 32);
+}
+
