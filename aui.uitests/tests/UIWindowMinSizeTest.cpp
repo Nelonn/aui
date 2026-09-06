@@ -68,8 +68,7 @@ TEST_F(UIWindowMinSize, IsCapped) {
         _new<AView>() AUI_OVERRIDE_STYLE { MinSize { 5000_dp } },
     });
 
-    EXPECT_EQ(AWindow::MAX_MIN_SIZE, 1000);
-    EXPECT_EQ(mWindow->getMinimumSize(), glm::ivec2(AWindow::MAX_MIN_SIZE));
+    EXPECT_EQ(mWindow->getMinimumSize(), glm::ivec2(1000));
 }
 
 // An empty window demands nothing but its own padding.
