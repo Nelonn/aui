@@ -134,7 +134,8 @@ void AWindow::setGeometry(int x, int y, int width, int height) {
 
     auto s = static_cast<NSWindow*>(mHandle);
     float dpi = getDpiRatio();
-    [s setMinSize:NSSizeFromCGSize({getMinSize().x / dpi, getMinSize().y / dpi})];
+    const auto minSize = getMinimumSize();
+    [s setMinSize:NSSizeFromCGSize({minSize.x / dpi, minSize.y / dpi})];
     [s setMaxSize:NSSizeFromCGSize({getMaxSize().x / dpi, getMaxSize().y / dpi})];
     [s setContentSize:NSSizeFromCGSize({width / dpi, height / dpi})];
 }

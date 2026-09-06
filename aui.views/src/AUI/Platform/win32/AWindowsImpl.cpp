@@ -262,7 +262,8 @@ LRESULT AWindow::winProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         case WM_GETMINMAXINFO: {
             MINMAXINFO* info = reinterpret_cast<MINMAXINFO*>(lParam);
 
-            RECT r = {0, 0, getMinSize().x, getMinSize().y};
+            const auto minSize = getMinimumSize();
+            RECT r = {0, 0, minSize.x, minSize.y};
             AdjustWindowRectEx(&r, GetWindowLongPtr(mHandle, GWL_STYLE), false, GetWindowLongPtr(mHandle, GWL_EXSTYLE));
             info->ptMinTrackSize.x = r.right - r.left;
             info->ptMinTrackSize.y = r.bottom - r.top;
