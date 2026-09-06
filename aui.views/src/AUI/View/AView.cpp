@@ -88,11 +88,11 @@ void AView::requestLayout() {
   mMeasureCache.clear();
   mMinMaxSizesCache.clear();
   if (static_cast<bool>(getVisibility() & Visibility::FLAG_CONSUME_SPACE)) {
-    if (mFixedSize == glm::ivec2(0) || mFixedSize != mSize) {
+    //if (mFixedSize == glm::ivec2(0) || mFixedSize != mSize) {
       if (mParent) {
         mParent->requestLayout();
       }
-    }
+    //}
   }
 }
 
