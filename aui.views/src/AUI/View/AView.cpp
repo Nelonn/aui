@@ -914,6 +914,23 @@ AString AView::debugString() const {
     return "{} at {}"_format(mAssNames.empty() ? IStringable::toString(this) : mAssNames.last(), getPositionInWindow());
 }
 
+IInspectable::DebugInspectorInfo AView::debugInspectorInfo() {
+    DebugInspectorInfo info;
+    info.reserve(11);
+    info.push_back({ "Position",     mPosition });
+    info.push_back({ "Size",         mSize });
+    info.push_back({ "Min size",     mMinSize });
+    info.push_back({ "Max size",     mMaxSize });
+    info.push_back({ "Fixed size",   mFixedSize });
+    info.push_back({ "Expanding",    mExpanding });
+    info.push_back({ "Visibility",   "{}"_format(mVisibility) });
+    info.push_back({ "Enabled",      mEnabled });
+    info.push_back({ "Text color",   mTextColor });
+    info.push_back({ "Opacity",      float(mOpacity) });
+    info.push_back({ "Border radius", mBorderRadius });
+    return info;
+}
+
 void AView::forceUpdateLayoutRecursively() {
     AUI_DO_ONCE {
         ALogger::warn("AView") << "AView::forceUpdateLayoutRecursively() called; it's for debugging purposes only.";

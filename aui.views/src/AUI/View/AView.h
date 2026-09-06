@@ -38,6 +38,7 @@
 #include <AUI/Util/ALayoutDirection.h>
 #include <AUI/Util/AConstraints.hpp>
 #include <AUI/Util/AMinMaxAxis.hpp>
+#include "../Util/IInspectable.h"
 #include <AUI/Action/AMenu.h>
 
 #include <AUI/Event/AScrollEvent.h>
@@ -89,7 +90,7 @@ class ViewPropertiesView;
  *
  * @ingroup useful_views
  */
-class API_AUI_VIEWS AView : public AObject {
+class API_AUI_VIEWS AView : public AObject, public IInspectable {
   friend class AViewContainerBase;
   friend class AViewContainer;
   friend class IRenderViewToTexture;
@@ -399,6 +400,15 @@ public:
    * @brief String which helps to identify this object in debug string output (i.e., for logging)
    */
   virtual AString debugString() const;
+
+  /**
+   * @brief Produces debug inspector information for this view.
+   * @details
+   * Exposes view's state (position, size, visibility, etc.) to debugging/inspection tooling
+   * (e.g. devtools, ViewPropertiesView). Override in subclasses to expose additional properties; typically
+   * you should append to the result of AView::debugInspectorInfo().
+   */
+  DebugInspectorInfo debugInspectorInfo() override;
 
   /**
    * @return pixel count which this AView's margin and padding acquired by width.

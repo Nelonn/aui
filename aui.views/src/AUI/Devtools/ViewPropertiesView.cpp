@@ -16,6 +16,7 @@
 #include <range/v3/all.hpp>
 
 #include "ViewPropertiesView.h"
+#include "InspectorRenderers.h"
 #include <AUI/ASS/ASS.h>
 #include <AUI/Common/IStringable.h>
 #include <AUI/Logging/ALogger.h>
@@ -99,10 +100,7 @@ void ViewPropertiesView::setTargetView(const _<AView>& targetView) {
       Button { Label { "Request Layout" }, [targetView] { targetView->requestLayout(); } },
     } AUI_OVERRIDE_STYLE { LayoutSpacing { 4_dp } },
 
-    Label { AUI_REACT("Size = {}px"_format(targetView->size())) },
-    Label { AUI_REACT("Min size = {}px"_format(targetView->getMinSize())) },
-    Label { AUI_REACT("Max size = {}px"_format(targetView->getMaxSize())) },
-    Label { AUI_REACT("Fixed size = {}px"_format(targetView->getFixedSize())) },
+    aui::inspector::render(targetView->debugInspectorInfo()),
 
     // TODO(Nelonn): COMPUTE THIS EATING FPS LIKE A SHIT
     Label { AUI_REACT("Compute min size = {}px"_format(targetView->computeMinMaxAxis().min)) },

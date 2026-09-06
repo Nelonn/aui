@@ -41,6 +41,7 @@ public:
     explicit ASpacerFixed(AMetric space) : mSpace(space) {}
     bool consumesClick(const glm::ivec2& pos) override;
     AMinMaxAxis onComputeIntrinsicMinMaxAxis(int height) override;
+    DebugInspectorInfo debugInspectorInfo() override;
 
 private:
     AMetric mSpace;

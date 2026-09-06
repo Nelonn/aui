@@ -338,3 +338,9 @@ void AAbstractLabel::commitStyle() {
     AView::commitStyle();
     commitStyleFont();
 }
+
+IInspectable::DebugInspectorInfo AAbstractLabel::debugInspectorInfo() {
+    auto info = AView::debugInspectorInfo();
+    info.push_back({ "text", mText });
+    return info;
+}

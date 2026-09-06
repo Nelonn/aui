@@ -103,6 +103,8 @@ public:
 
     void invalidateAllStyles() override;
 
+    DebugInspectorInfo debugInspectorInfo() override;
+
 protected:
     _<IRenderer::IPrerenderedString> mPrerendered;
 

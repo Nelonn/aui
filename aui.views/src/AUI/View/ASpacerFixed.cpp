@@ -28,3 +28,20 @@ AMinMaxAxis ASpacerFixed::onComputeIntrinsicMinMaxAxis(int height) {
 bool ASpacerFixed::consumesClick(const glm::ivec2& pos) {
     return false;
 }
+
+IInspectable::DebugInspectorInfo ASpacerFixed::debugInspectorInfo() {
+    auto info = AView::debugInspectorInfo();
+    info.push_back({ "space", mSpace });
+    auto parent = getParent();
+    if (!parent) {
+        info.push_back({ "direction", "<no parent>" });
+        return info;
+    }
+    const auto& layout = parent->getLayout();
+    if (!layout) {
+        info.push_back({ "direction", "<no layout>" });
+        return info;
+    }
+    info.push_back({ "direction", layout->getLayoutDirection() });
+    return info;
+}
